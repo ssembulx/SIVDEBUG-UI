@@ -1,0 +1,315 @@
+<div class="container-fluid" [class]="fullScreenFlag? 'fullscreen-width':''">
+    <ng-container>
+        <div class="chart-wrapper-title">
+            <div class="row  mr-3 ml-3">
+                <div class="col-4 p-0">
+                    <div class="caption">
+                        <i class="fa fa-chart-bar fa-2x" style="color: #9eacb4;font-size: 22px;margin-top: -1px;"></i>
+                        <span class="chart-header"> {{triageAccuracyData._heading}}</span>
+                        <!--  <span class="chart-header" style="font-size: 15px;"> ( Data Source: HSDES )</span> -->
+                    </div>
+                </div>
+                <div class="col-8 p-0">
+                    <!--  <mat-icon (click)="getfullScreen()" class="icon-fullscreen float-right mt-2" [matTooltip]="fullScreenFlag? ' Exit fullscreen':'Fullscreen'" aria-hidden="false" aria-label="Example home icon">open_in_full</mat-icon> -->
+                    <div class="float-right mt_8">
+                        <i class="fas fa-download filter-color  mr-3 mt-1" matTooltip="Download" (click)="exportTOExcel()" aria-hidden="true"></i>
+                        <i class="fas fa-info-circle filter-color  mr-3 mt-1" matTooltip="Info" (click)="openLg(content)" aria-hidden="true"></i>
+                        <i (click)="getfullScreen()" [matTooltip]="fullScreenFlag? ' Exit fullscreen':'Fullscreen'" class="fas fa-expand filter-color mt-1" matTooltip="Full Screen" aria-hidden="true"></i>
+                    </div>
+                    <div class="float-right mt_8 mr-3">
+                        <button mat-raised-button color="primary" style="min-width:15px;width: 35px;height: 28px;line-height: 28px;background-color: #0071c5; margin-right: 10px;padding: 0 10px;" (click)="applyFilter()" matTooltip="Apply"><i class="fas fa-check"></i></button>
+                        <button mat-raised-button color="primary" style="min-width:15px;width: 35px;height: 28px; line-height: 28px;background-color: #0071c5;padding:0 10px" (click)="resetFilter()" matTooltip="Reset"><i class="fas fa-undo"></i></button>
+                    </div>
+                    <div class="float-right mt_8 mr-3">
+                        <button mat-button class="custom_filter_btn p-0" [matMenuTriggerFor]="menuDuration" [matTooltip]="duration">{{duration}}<mat-icon>arrow_drop_down</mat-icon></button>
+                        <mat-menu #menuDuration="matMenu">
+                            <button mat-menu-item (click)="onValChange('Year')">Year</button>
+                            <button mat-menu-item (click)="onValChange('Quarter')">Quarter</button>
+                            <button mat-menu-item (click)="onValChange('Week')">Week</button>
+                            <button mat-menu-item (click)="onValChange('Platform')">Platform</button>
+                        </mat-menu>
+                        <!-- <label [ngClass]="{'active_duration': duration === 'Year'}" class="mb-0 btn btn-transparent blue-oleo btn-no-border btn-outline btn-circle btn-sm mr-1" (click)="onValChange('Year')">Year</label>
+                        <label [ngClass]="{'active_duration': duration === 'Quarter'}" class="mb-0 btn btn-transparent blue-oleo btn-no-border btn-outline btn-circle btn-sm mr-1" (click)="onValChange('Quarter')">Quarter</label>
+                        <label [ngClass]="{'active_duration': duration === 'Week'}" class="mb-0 btn btn-transparent blue-oleo btn-no-border btn-outline btn-circle btn-sm mr-1" (click)="onValChange('Week')">WW</label>
+                        <label class="active_duration mb-0 btn btn-transparent blue-oleo btn-no-border btn-outline btn-circle btn-sm" (click)="openLg(content)"><i class="fa fa-info-circle" aria-hidden="true"></i></label> -->
+                    </div>
+                    <div class="float-right mt_8 mr-3">
+                        <!-- <button mat-button class="custom_filter_btn p-0" [matMenuTriggerFor]="menuGroup" [matTooltip]="selectedGroupDomain">{{selectedGroupDomain}}<mat-icon>arrow_drop_down</mat-icon></button>
+                        <mat-menu #menuGroup="matMenu">
+                            <button mat-menu-item (click)="onGroupValChange('Group Domain')">All Group Domain</button>
+                            <button mat-menu-item *ngFor="let plat of groupDomainList" [value]="plat.coeGroupName" (click)="onGroupValChange(plat.coeGroupName)">{{plat.coeGroupName}}</button>
+                            <button mat-menu-item class="add_group_details" (click)="openAddGroupDetails()">
+                                Add GroupCOE Details
+                                <span class="material-icons add_group_coe_option_icon">
+                                add_box
+                                </span></button>
+                        </mat-menu> -->
+
+                        <!--   <mat-form-field>
+                            <mat-select #selectGroupDomain multiple [matTooltip]="selectedGroupDomain" placeholder="{{groupDomainPlaceholderTxt}}">
+                                <div class="select-all">
+                                    <mat-checkbox [(ngModel)]="allSelectedGroupDomain" [checked]="allSelectedGroupDomain" [ngModelOptions]="{standalone: true}" (change)="toggleAllSelectionGroupDomain($event)">All Group Domain</mat-checkbox>
+                                </div>
+                                <mat-option (click)="optionClickGroupDomain()" *ngFor="let plat of groupDomainList" [value]="plat.coeGroup">
+                                    {{plat.coeGroup}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field> -->
+                        <mat-form-field>
+                            <mat-select #selectGroupDomain multiple [matTooltip]="selectedGroupDomain" placeholder="{{groupDomainPlaceholderTxt}}">
+                                <mat-option (click)="checkAll()">All Group Domain</mat-option>
+                                <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
+                                    <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
+                                        <button mat-icon-button disabled></button>
+                                        <mat-checkbox [checked]="descendantsAllSelected(node)" [indeterminate]="descendantsPartiallySelected(node)" (change)="nodeSelectionToggle(node)">
+                                            {{node.item}}
+                                        </mat-checkbox>
+                                    </mat-tree-node>
+                                    <mat-tree-node *matTreeNodeDef="let node; when: hasChildren" matTreeNodePadding>
+                                        <button mat-icon-button matTreeNodeToggle [attr.aria-label]="'toggle ' + node.filename">
+                                            <mat-icon>
+                                              {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+                                            </mat-icon>
+                                          </button>
+                                        <mat-checkbox [checked]="descendantsAllSelected(node)" [indeterminate]="descendantsPartiallySelected(node)" (change)="nodeSelectionToggle(node)">
+                                            {{node.item}}
+                                        </mat-checkbox>
+                                    </mat-tree-node>
+                                </mat-tree>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="float-right mt_8 mr-3">
+                        <!--  <button mat-button class="custom_filter_btn p-0" [matMenuTriggerFor]="menu" [matTooltip]="selected">{{selected}}<mat-icon>arrow_drop_down</mat-icon></button>
+                        <mat-menu #menu="matMenu">
+                            <button mat-menu-item (click)="onPlatformValChange('Platform')">All Platform</button>
+                            <button mat-menu-item *ngFor="let plat of platformslist" [value]="plat.platformNames" (click)="onPlatformValChange(plat.platformNames)">{{plat.platformNames}}</button>
+                        </mat-menu> -->
+                        <!--  <mat-form-field>
+                            <mat-select [formControl]="toppings" multiple>
+                                <mat-select-trigger>
+                                    {{toppings.value}}
+                                </mat-select-trigger>
+                                <mat-option *ngFor="let topping of toppingList" [value]="topping" (click)="onPlatformValChange(allSelected.viewValue)">{{topping}}</mat-option>
+                            </mat-select>
+                        </mat-form-field> -->
+                        <!--  <mat-form-field>
+                            <mat-select #select multiple [formControl]="bankMultiCtrl" [matTooltip]="selected" placeholder="{{selected}}">
+                                <mat-option>
+                                    <ngx-mat-select-search [formControl]="bankMultiFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="No Result Found"></ngx-mat-select-search>
+                                </mat-option> -->
+                        <!--  <div class="select-all">
+                                    <mat-checkbox [(ngModel)]="allSelected" [checked]="allSelected" [ngModelOptions]="{standalone: true}" (change)="toggleAllSelection($event)">All Platform</mat-checkbox>
+                                </div> -->
+                        <!--  <ng-container *ngFor="let plat of platformslist">
+                                    <mat-option (click)="optionClick()" *ngIf="plat.platformNames !='All Platform'" [value]="plat.platformNames">
+                                        {{plat.platformNames}}
+                                    </mat-option>
+                                    <mat-option (click)="toggleAllSelection($event)" *ngIf="plat.platformNames =='All Platform'" [value]="plat.platformNames">
+                                        {{plat.platformNames}}
+                                    </mat-option>
+                                </ng-container>
+                            </mat-select>
+                        </mat-form-field> -->
+                        <!--  <mat-form-field>
+                            <mat-select #selectGroupDomain multiple [matTooltip]="selected" placeholder="{{selected}}">
+                                <mat-option (click)="checkAllPlatform()">All Platform</mat-option>
+                                <mat-tree [dataSource]="dataSourcePlatform" [treeControl]="treeControlPlatform">
+                                    <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
+                                        <button mat-icon-button disabled></button>
+                                        <mat-checkbox [checked]="descendantsAllSelectedPlatform(node)" [indeterminate]="descendantsPartiallySelectedPlatform(node)" (change)="nodeSelectionTogglePlatform(node)">
+                                            {{node.item}}
+                                        </mat-checkbox>
+                                    </mat-tree-node>
+                                    <mat-tree-node *matTreeNodeDef="let node; when: hasChildren" matTreeNodePadding>
+                                        <button mat-icon-button matTreeNodeToggle [attr.aria-label]="'toggle ' + node.filename">
+                                            <mat-icon>
+                                              {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+                                            </mat-icon>
+                                          </button>
+                                        <mat-checkbox [checked]="descendantsAllSelectedPlatform(node)" [indeterminate]="descendantsPartiallySelectedPlatform(node)" (change)="nodeSelectionTogglePlatform(node)">
+                                            {{node.item}}
+                                        </mat-checkbox>
+                                    </mat-tree-node>
+                                </mat-tree>
+                            </mat-select>
+                        </mat-form-field> -->
+                        <mat-form-field>
+                            <mat-select #select multiple [formControl]="bankMultiCtrl" [matTooltip]="selectedTXT" placeholder="{{selected}}" [(ngModel)]="preSelected">
+                                <mat-option>
+                                    <ngx-mat-select-search [formControl]="bankMultiFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="No Result Found"></ngx-mat-select-search>
+                                </mat-option>
+                                <!--  <div class="select-all">
+                                    <mat-checkbox [(ngModel)]="allSelected" [checked]="allSelected" [ngModelOptions]="{standalone: true}" (change)="toggleAllSelection($event)">All Platform</mat-checkbox>
+                                </div> -->
+                                <ng-container *ngFor="let plat of platformslist">
+                                    <mat-option (click)="optionClick('platform',plat.platformName,plat.platformGroupID)" *ngIf="plat.platformName !='Platform Select/Deselect All'" [value]="plat.platformName">
+                                        {{plat.platformName}}
+                                    </mat-option>
+                                    <mat-option (click)="toggleAllSelection($event)" *ngIf="plat.platformName =='Platform Select/Deselect All'" [value]="plat.platformName">
+                                        {{plat.platformName}}
+                                    </mat-option>
+                                    <ng-container *ngFor="let pla of plat.platformSkuList">
+                                        <mat-option style="padding: 0 40px;" (click)="optionClick('sku',pla.skuName,pla.skuid)" [value]="pla.skuid">
+                                            {{pla.skuName}}
+                                        </mat-option>
+                                    </ng-container>
+                                </ng-container>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="float-right mt_8 mr-3">
+                        <!--  <button mat-button class="custom_filter_btn p-0" [matMenuTriggerFor]="menu" [matTooltip]="selected">{{selected}}<mat-icon>arrow_drop_down</mat-icon></button>
+                        <mat-menu #menu="matMenu">
+                            <button mat-menu-item (click)="onPlatformValChange('Platform')">All Platform</button>
+                            <button mat-menu-item *ngFor="let plat of platformslist" [value]="plat.platformNames" (click)="onPlatformValChange(plat.platformNames)">{{plat.platformNames}}</button>
+                        </mat-menu> -->
+                        <mat-form-field>
+                            <mat-select #selectexposure multiple [formControl]="exposureMultiCtrl" [matTooltip]="selectedExposure" placeholder="{{exposurePlaceholderTxt}}">
+                                <!--  <div class="select-all">
+                                    <mat-checkbox [(ngModel)]="allExposure" [checked]="allExposure" [ngModelOptions]="{standalone: true}" (change)="toggleAllExposure($event)">All Exposure</mat-checkbox>
+                                </div> -->
+
+                                <!-- <mat-option (onSelectionChange)="toggleAllSelection($event)" [value]="allSelected">
+                                    All Platform
+                                </mat-option> -->
+                                <mat-option>
+                                    <ngx-mat-select-search [formControl]="exposureFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="No Result Found"></ngx-mat-select-search>
+                                </mat-option>
+                                <ng-container *ngFor="let plat of exposerList">
+                                    <mat-option (click)="optionClickExposre()" *ngIf="plat.exposure !='All Exposure'" [value]="plat.exposure">
+                                        {{plat.exposure}}
+                                    </mat-option>
+                                    <mat-option (click)="toggleAllExposure($event)" *ngIf="plat.exposure =='All Exposure'" [value]="plat.exposure">
+                                        {{plat.exposure}}
+                                    </mat-option>
+                                </ng-container>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+            <hr />
+            <!--  <cqi-chart chartdiv="chartdiv" [chartInfo]='mainChart' [ChartType]='1' [ChartData]='mainChart.data' [Series]='mainChart.series'></cqi-chart> -->
+            <div [style.visibility]="chartView? 'visible': 'hidden'">
+                <div id="chartdiv"></div>
+            </div>
+            <!--   <div *ngIf="loader">
+                <div class="loader"></div>
+            </div> -->
+            <ngx-spinner bdColor="rgba(255,255,255,0.8)" size="medium" color="#0071c5" type="line-scale" [fullScreen]="true">
+                <p style="color: #0071c5; font-size: 16px;font-weight: 600;"> Processing... </p>
+            </ngx-spinner>
+            <div class="no_data_block" *ngIf="noDataFound">
+                <img src="./assets/IMG/paper.svg">
+                <h1 class="mt-2">No Record Found</h1>
+            </div>
+        </div>
+    </ng-container>
+</div>
+<!-- 
+<div class="row" style="margin-top: 1.5%;">
+    <div class="col-sm-12 mb-1 bg-white rounded" style="margin-left:1px;margin-right:1px;">
+        <div class="row">
+            <div class="md-4 mb-4 bg-white col-sm-4" style="height:328px;" *ngFor="let latestchange of latestchangesArray;let i=index">
+                <cqi-legend [model]=latestchange [smallchart]="'smallchart'+i" [ChartType]='2' [ChartData]='chartInfo.data' [idx]='i' (legendClickEvent)='legendClickEvent($event)'></cqi-legend>
+            </div>
+        </div>
+    </div>
+</div> -->
+
+<div class="slider_block" *ngIf="enableSlider">
+    <div class="slider_header">
+        <h4 class="modal-title mb-0">Add GroupCOE Details</h4>
+        <button type="button" class="close" (click)="closeSlider()">&times;</button>
+    </div>
+    <div class="slider_body w-100 float-left pt-3">
+        <div class="col-12 p-0 float-left">
+            <div class="col-12 float-left">
+                <mat-form-field class="example-full-width w-100">
+                    <mat-label>Domain Name</mat-label>
+                    <input matInput placeholder="Enter Domain Name" [(ngModel)]="domainName" (input)="userMetrics($event.target.value)">
+                </mat-form-field>
+            </div>
+            <div class="col-12 float-left">
+                <!-- <mat-form-field class="example-full-width w-100">
+                    <mat-label>COEGroup</mat-label>
+                    <mat-select (selectionChange)="onAddCOEValChange($event.value)">
+                        <mat-option *ngFor="let plat of groupDomainConfig" [value]="plat.coeGroup">{{plat.coeGroup}}</mat-option>
+                    </mat-select>
+                </mat-form-field> -->
+                <mat-form-field class="example-full-width w-100">
+                    <mat-label>COE Group</mat-label>
+                    <input matInput placeholder="Enter COE Group Name" [(ngModel)]="addCOEValue" (input)="onAddCOEValChange($event.target.value)">
+                </mat-form-field>
+            </div>
+        </div>
+    </div>
+    <div class="slider_footer w-100 float-left">
+        <button mat-raised-button color="primary" class="float-right btn_color" (click)="addCOE()">Save</button>
+        <button mat-raised-button class="float-right mr-2" (click)="closeSlider()">Close</button>
+    </div>
+</div>
+
+<ng-template #content let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title mb-0" style="font-size: 20px;">Data Fetching Criteria</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+        <div class="row m-0">
+            <div class="col-12 p-0">
+                <ng-container *ngFor="let latestchange of dcrInformation;let i=index">
+                    <ul>
+                        <li>
+                            <h4>{{latestchange.information}}</h4>
+                        </li>
+                    </ul>
+                    <!-- <h4>For calculating DCR % we are referring below link. information</h4>
+                    <a href="{{latestchange.informationDetails}}" target="_blank">{{latestchange.informationDetails}} </a> -->
+                </ng-container>
+                <!--   <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Closed Date</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Reason</th>
+                            <th scope="col">Closed Reason</th>
+                            <th scope="col">Submit Org</th>
+                            <th scope="col" *ngIf="isPlatform">Platform</th>
+                            <th scope="col" *ngIf="isDomainGroup">Domain Group</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let latestchange of dcrInformation;let i=index">
+                            <th scope="row">{{i+1}}</th> -->
+                <!--  <td *ngIf="latestchange.closed_date == ''">-</td>
+                            <td *ngIf="latestchange.closed_date != ''">{{latestchange.closed_date}}</td>
+                            <td *ngIf="latestchange.status == ''">-</td>
+                            <td *ngIf="latestchange.status != ''">{{latestchange.status}}</td>
+                            <td *ngIf="latestchange.status_reason == ''">-</td>
+                            <td *ngIf="latestchange.status_reason != ''">{{latestchange.status_reason}}</td>
+                            <td *ngIf="latestchange.closed_reason == ''">-</td>
+                            <td *ngIf="latestchange.closed_reason != ''">{{latestchange.closed_reason}}</td>
+                            <td *ngIf="latestchange.submitter_org == ''">-</td>
+                            <td *ngIf="latestchange.submitter_org != ''">{{latestchange.submitter_org}}</td> -->
+                <!--    <td>{{latestchange.closed_date}}</td>
+                            <td>{{latestchange.status}}</td>
+                            <td>{{latestchange.status_reason}}</td>
+                            <td>{{latestchange.closed_reason}}</td>
+                            <td>{{latestchange.submitter_org}}</td>
+                            <td *ngIf="isPlatform">{{latestchange.platform}}</td>
+                            <td *ngIf="isDomainGroup">{{latestchange.domaingroup}}</td>
+                        </tr>
+                    </tbody>
+                </table> -->
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Close</button>
+    </div>
+</ng-template>

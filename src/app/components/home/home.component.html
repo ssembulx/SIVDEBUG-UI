@@ -1,0 +1,343 @@
+<div class="container-fluid">
+    <div class="col-12 float-left mb-2_35">
+        <ng-container>
+            <div class="chart-wrapper-title">
+                <div class="row  mr-3 ml-3">
+                    <div class="col-5 p-0">
+                        <div class="caption">
+                            <i class="fa fa-chart-bar fa-2x" style="color: #9eacb4;font-size: 22px;margin-top: -1px;"></i>
+                            <span class="chart-header"> Introduction </span>
+                            <!--  <span class="chart-header" style="font-size: 15px;"> ( Data Source: HSDES )</span> -->
+                        </div>
+                    </div>
+                    <div class="col-7 p-0">
+                        <div class="float-right mt_8">
+                            <!--    <i class="fas fa-info-circle filter-color  mr-3 mt-1" matTooltip="Info" (click)="openLg(content)" aria-hidden="true"></i> -->
+                            <!--  <i (click)="getfullScreen()" [matTooltip]="fullScreenFlag? ' Exit fullscreen':'Fullscreen'" class="fas fa-expand filter-color mt-1" matTooltip="Full Screen" aria-hidden="true"></i> -->
+                        </div>
+                    </div>
+                </div>
+                <hr />
+
+                <div class="p-3">
+                    <div class="intro">Standardize the metrics, its computation methodology & visual representation of this data that can be used to measure accuracy and efficiency of bug management process within SIV</div>
+                    <!--  <div class="text-center m-5 p-4" style="border:2px dashed #9eacb4;border-radius: 5px;">
+                        <a href="{{HSDESLink[0].coeQueryID}}" target="_blank" style="text-decoration: none;">
+                            <i class="fa fa-file fa-2x" style="color: #9eacb4;font-size: 40px;margin-top: -1px;"></i>
+                            <h3 style="color: #9eacb4;font-size: 22px;text-decoration: none;">Click here to view HSDES data</h3>
+                        </a>
+                    </div> -->
+                </div>
+            </div>
+        </ng-container>
+    </div>
+    <div class="col-12 float-left mb-2_35">
+        <ng-container>
+            <div class="chart-wrapper-title">
+                <div class="row  mr-3 ml-3">
+                    <div class="col-5 p-0">
+                        <div class="caption">
+                            <i class="fa fa-chart-bar fa-2x" style="color: #9eacb4;font-size: 22px;margin-top: -1px;"></i>
+                            <span class="chart-header"> Terminologies </span>
+                            <!--  <span class="chart-header" style="font-size: 15px;"> ( Data Source: HSDES )</span> -->
+                        </div>
+                    </div>
+                    <div class="col-7 p-0">
+                        <div class="float-right mt_8">
+                            <!--    <i class="fas fa-info-circle filter-color  mr-3 mt-1" matTooltip="Info" (click)="openLg(content)" aria-hidden="true"></i> -->
+                            <!--  <i (click)="getfullScreen()" [matTooltip]="fullScreenFlag? ' Exit fullscreen':'Fullscreen'" class="fas fa-expand filter-color mt-1" matTooltip="Full Screen" aria-hidden="true"></i> -->
+                        </div>
+                    </div>
+                </div>
+                <hr />
+
+                <div class="download-block p-3">
+                    <table class="table table-bordered mb-0">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col" class="col-2">Terminology</th>
+                                <th scope="col" class="col-5">Definition</th>
+                                <th scope="col" class="col-5">How to compute</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">1</th>
+                                <td>Bug throughput</td>
+                                <td>Overall days from open.new to complete/ reject status of a sighting in client_platf.bug tenant</td>
+                                <td>days_open value for the HSD-ES record which is in complete / rejected state</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">2</th>
+                                <td>Triage throughput</td>
+                                <td>Days taken to triage a new sighting</td>
+                                <td>days_decimal_triage value for the record. If this is empty, it would mean the sighting status was never set to open.triage and this data can not be computed</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">3</th>
+                                <td>Triage accuracy</td>
+                                <td>Correctness of triaged component which is measured once the sightings moves to complete state
+                                </td>
+                                <td>Ratio of HSDs with status = complete.product_changed HSDs where component is same as triaged_component and overall count of HSDs with status = complete.product_changed
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">4</th>
+                                <td>DCR</td>
+                                <td>Ratio of valid defects to overall closed sightings</td>
+                                <td>Refer here</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">5</th>
+                                <td>Sightings</td>
+                                <td>Any observations made on the platform which translates to a unique HSD-ES record ID</td>
+                                <td>NA</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">6</th>
+                                <td>Defects</td>
+                                <td>Sightings that are confirmed bugs / issues</td>
+                                <td>HSDs with closed reasons marked as Green -> <span><a routerLink="/dcr">Refer here</a></span></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">7</th>
+                                <td>Ageing</td>
+                                <td>Overall days from open.new of a sighting in client_platf.bug tenant</td>
+                                <td>days_open value for the HSD-ES record which is not in complete / rejected state</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">8</th>
+                                <td>backlog</td>
+                                <td>Count of open + implemented sightings</td>
+                                <td>Count of open + implemented sightings
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">9</th>
+                                <td>Silicon defect</td>
+                                <td>A HSD-ES record that is resolved as an Intel Silicon issue</td>
+                                <td>status = complete & closed_reason = internal_si_bug
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">10</th>
+                                <td>Non Intel issues</td>
+                                <td>Issues not related to Internal HW/SW/FW</td>
+                                <td>status = complete & closed_reason = customer* OR 3rd_paty OR os_issue</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+    <div class="col-12 float-left mb-2_35">
+        <ng-container>
+            <div class="chart-wrapper-title">
+                <div class="row  mr-3 ml-3">
+                    <div class="col-5 p-0">
+                        <div class="caption">
+                            <i class="fa fa-eye fa-2x" style="color: #9eacb4;font-size: 22px;margin-top: -1px;"></i>
+                            <span class="chart-header"> User View Details </span>
+                            <!--  <span class="chart-header" style="font-size: 15px;"> ( Data Source: HSDES )</span> -->
+                        </div>
+                    </div>
+                    <div class="col-7 p-0">
+                        <div class="float-right mt_8">
+                            <!--    <i class="fas fa-info-circle filter-color  mr-3 mt-1" matTooltip="Info" (click)="openLg(content)" aria-hidden="true"></i> -->
+                            <!--  <i (click)="getfullScreen()" [matTooltip]="fullScreenFlag? ' Exit fullscreen':'Fullscreen'" class="fas fa-expand filter-color mt-1" matTooltip="Full Screen" aria-hidden="true"></i> -->
+                        </div>
+                    </div>
+                </div>
+                <hr />
+
+                <div class="download-block p-3">
+                    <table class="table table-bordered mb-0">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col" class="col-3">Chart Name</th>
+                                <th scope="col" class="col-3">Overall Unique Users</th>
+                                <th scope="col" class="col-3">Current Month Hit</th>
+                                <th scope="col" class="col-3">Total View</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let user of userviewDetails;let i=index">
+                                <th scope="row">{{i+1}}</th>
+                                <td>{{user.chartName}}</td>
+                                <td>{{user.usercount}}</td>
+                                <td>{{user.currentMonthhit}}</td>
+                                <td>{{user.totalView}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+    <div class="col-12 float-left mb-2_35 p-0">
+
+        <div class="col-3 float-left mb-2_35">
+            <ng-container>
+                <div class="chart-wrapper-title">
+                    <div class="row  mr-3 ml-3">
+                        <div class="col-5 p-0">
+                            <div class="caption">
+                                <i class="fa fa-chart-bar fa-2x" style="color: #9eacb4;font-size: 22px;margin-top: -1px;"></i>
+                                <span class="chart-header"> HSDES </span>
+                                <!--  <span class="chart-header" style="font-size: 15px;"> ( Data Source: HSDES )</span> -->
+                            </div>
+                        </div>
+                        <div class="col-7 p-0">
+                            <div class="float-right mt_8">
+                                <!--    <i class="fas fa-info-circle filter-color  mr-3 mt-1" matTooltip="Info" (click)="openLg(content)" aria-hidden="true"></i> -->
+                                <!--  <i (click)="getfullScreen()" [matTooltip]="fullScreenFlag? ' Exit fullscreen':'Fullscreen'" class="fas fa-expand filter-color mt-1" matTooltip="Full Screen" aria-hidden="true"></i> -->
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+
+                    <div class="download-block">
+                        <div class="text-center m-5 p-4" style="border:2px dashed #666;border-radius: 5px;min-height: 13rem;">
+                            <a href="{{HSDESLink[0].coeQueryID}}" target="_blank" style="text-decoration: none;">
+                                <i class="fa fa-file fa-2x" style="color: #666;font-size: 40px;margin-top: -1px;"></i>
+                                <h3 class="mb-0 mt-2" style="color: #666;font-size: 14px;text-decoration: none;">Click here to view HSDES data</h3>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+        <!-- <div class="col-6 float-left">
+        <ng-container>
+            <div class="chart-wrapper-title">
+                <div class="row  mr-3 ml-3">
+                    <div class="col-5 p-0">
+                        <div class="caption">
+                            <i class="fa fa-chart-bar fa-2x" style="color: #9eacb4;font-size: 22px;margin-top: -1px;"></i>
+                            <span class="chart-header"> HSD query </span>
+                        </div>
+                    </div>
+                    <div class="col-7 p-0">
+                        <div class="float-right mt_8">
+                        </div>
+                    </div>
+                </div>
+                <hr />
+
+                <div>sample</div>
+            </div>
+        </ng-container>
+    </div> -->
+        <div class="col-3 float-left mb-2_35">
+            <ng-container>
+                <div class="chart-wrapper-title">
+                    <div class="row  mr-3 ml-3">
+                        <div class="col-12 p-0">
+                            <div class="caption">
+                                <i class="fa fa-download fa-2x" style="color: #9eacb4;font-size: 22px;margin-top: -1px;"></i>
+                                <span class="chart-header"> Download Latest PRD </span>
+                                <!--  <span class="chart-header" style="font-size: 15px;"> ( Data Source: HSDES )</span> -->
+                            </div>
+                        </div>
+                        <!-- <div class="col-2 p-0">
+                            <div class="float-right mt_8"> -->
+                        <!--    <i class="fas fa-info-circle filter-color  mr-3 mt-1" matTooltip="Info" (click)="openLg(content)" aria-hidden="true"></i> -->
+                        <!--  <i (click)="getfullScreen()" [matTooltip]="fullScreenFlag? ' Exit fullscreen':'Fullscreen'" class="fas fa-expand filter-color mt-1" matTooltip="Full Screen" aria-hidden="true"></i> -->
+                        <!--   </div>
+                        </div> -->
+                    </div>
+                    <hr />
+                    <div class="download-block">
+                        <div class="text-center m-5 p-4" style="border:2px dashed #666;border-radius: 5px;min-height: 13rem;">
+                            <a target="_blank" href="https://saei-document.apps1-or-int.icloud.intel.com/PRD_SIV_Sighting_Indicators_v0.3.pdf" style="text-decoration: none;">
+                                <i class="fa fa-download fa-2x" style="color: #666;font-size: 40px;margin-top: -1px;"></i>
+                                <h3 class="mb-0" style="color: #666;font-size: 14px;text-decoration: none;">Click here to download latest PRD</h3>
+                            </a>
+                            <!--  <div>
+                            <i class="fa fa-download fa-2x" style="color: #9eacb4;font-size: 22px;margin-top: -1px;"></i>
+                        </div> -->
+
+                            <!-- <button mat-raised-button color="primary"><a href="https://sivindicator.intel.com/SIVAPIDEV/api/SIVDebug/PRDDownload">Download</a></button> -->
+                            <!-- <button><a href="https://sivindicator.intel.com/SIVAPIDEV/api/SIVDebug/PRDDownload">Download</a></button> -->
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+        <div class="col-3 float-left mb-2_35">
+            <ng-container>
+                <div class="chart-wrapper-title">
+                    <div class="row  mr-3 ml-3">
+                        <div class="col-12 p-0">
+                            <div class="caption">
+                                <i class="fa fa-download fa-2x" style="color: #9eacb4;font-size: 22px;margin-top: -1px;"></i>
+                                <span class="chart-header"> Download API Doc </span>
+                                <!--  <span class="chart-header" style="font-size: 15px;"> ( Data Source: HSDES )</span> -->
+                            </div>
+                        </div>
+                        <!--     <div class="col-2 p-0">
+                            <div class="float-right mt_8"> -->
+                        <!--    <i class="fas fa-info-circle filter-color  mr-3 mt-1" matTooltip="Info" (click)="openLg(content)" aria-hidden="true"></i> -->
+                        <!--  <i (click)="getfullScreen()" [matTooltip]="fullScreenFlag? ' Exit fullscreen':'Fullscreen'" class="fas fa-expand filter-color mt-1" matTooltip="Full Screen" aria-hidden="true"></i> -->
+                        <!--   </div>
+                </div> -->
+                    </div>
+                    <hr />
+                    <div class="download-block">
+                        <div class="text-center m-5 p-4" style="border:2px dashed #666;border-radius: 5px;min-height: 13rem;">
+                            <a target="_blank" href="https://saei-document.apps1-or-int.icloud.intel.com/DCR.pdf" style="text-decoration: none;">
+                                <i class="fa fa-download fa-2x" style="color: #666;font-size: 40px;margin-top: -1px;"></i>
+                                <h3 class="mb-0" style="color: #666;font-size: 14px;text-decoration: none;">Click here to download latest API Document</h3>
+                            </a>
+                            <!--  <div>
+                            <i class="fa fa-download fa-2x" style="color: #9eacb4;font-size: 22px;margin-top: -1px;"></i>
+                        </div> -->
+
+                            <!-- <button mat-raised-button color="primary"><a href="https://sivindicator.intel.com/SIVAPIDEV/api/SIVDebug/PRDDownload">Download</a></button> -->
+                            <!-- <button><a href="https://sivindicator.intel.com/SIVAPIDEV/api/SIVDebug/PRDDownload">Download</a></button> -->
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+        <div class="col-3 float-left mb-2_35">
+            <ng-container>
+                <div class="chart-wrapper-title">
+                    <div class="row  mr-3 ml-3">
+                        <div class="col-10 p-0">
+                            <div class="caption">
+                                <i class="fas fa-headset fa-2x" style="color: #9eacb4;font-size: 22px;margin-top: -1px;"></i>
+                                <span class="chart-header"> Contact/Support </span>
+                                <!--  <span class="chart-header" style="font-size: 15px;"> ( Data Source: HSDES )</span> -->
+                            </div>
+                        </div>
+                        <div class="col-2 p-0">
+                            <div class="float-right mt_8">
+                                <!--    <i class="fas fa-info-circle filter-color  mr-3 mt-1" matTooltip="Info" (click)="openLg(content)" aria-hidden="true"></i> -->
+                                <!--  <i (click)="getfullScreen()" [matTooltip]="fullScreenFlag? ' Exit fullscreen':'Fullscreen'" class="fas fa-expand filter-color mt-1" matTooltip="Full Screen" aria-hidden="true"></i> -->
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="download-block">
+                        <div class="text-center m-5 p-4" style="border:2px dashed #666;border-radius: 5px;min-height: 13rem;">
+                            <a href="mailto:ravish.kumar@intel.com;vijayaramanx.paramasivam@intel.com;sakthirajanx.sembulingam@intel.com" style="text-decoration: none;">
+                                <i class="fas fa-envelope fa-2x" style="color: #666;font-size: 40px;margin-top: -1px;"></i>
+                                <h3 class="mb-0" style="color: #666;font-size: 14px;text-decoration: none;">Click here to drop an email to support team</h3>
+                            </a>
+                            <!--  <div>
+                            <i class="fa fa-download fa-2x" style="color: #9eacb4;font-size: 22px;margin-top: -1px;"></i>
+                        </div> -->
+
+                            <!-- <button mat-raised-button color="primary"><a href="https://sivindicator.intel.com/SIVAPIDEV/api/SIVDebug/PRDDownload">Download</a></button> -->
+                            <!-- <button><a href="https://sivindicator.intel.com/SIVAPIDEV/api/SIVDebug/PRDDownload">Download</a></button> -->
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+</div>

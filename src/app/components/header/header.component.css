@@ -1,0 +1,207 @@
+.header-top {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 15px !important;
+    background-color: #0071c5;
+}
+
+.header-wrapper {
+    height: 50px;
+    background-color: #0071c5;
+}
+
+.second-header {
+    background-color: #02101b;
+    height: 30px;
+}
+
+h6 {
+    font-size: 1rem !important;
+    color: #ffffff;
+    position: relative;
+    padding: 7px 7px 7px 10px;
+}
+
+.brand-text {
+    position: absolute;
+    width: 98%;
+    top: 12px;
+}
+
+h3 {
+    color: #ffffff;
+    text-align: center;
+}
+
+.jarvis-logo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    align-content: flex-begin;
+    flex-direction: row;
+    padding: 0;
+    position: relative;
+}
+
+.left-header .jarvis-logo .jarvis-logo__brand {
+    width: 68px;
+    position: absolute;
+    top: 7px;
+    display: inline-block;
+    left: 4px;
+}
+
+.right-header {
+    position: absolute;
+    width: 98%;
+    text-align: right
+}
+
+.user-section {
+    display: -webkit-inline-box;
+    display: inline-flex;
+    padding: 2px 10px;
+}
+
+.avatar {
+    position: relative;
+    overflow: hidden;
+    width: 40px;
+    height: 40px;
+    background: #ddd;
+    border-radius: 50%;
+    border: 2px solid #afb2c1;
+    margin-top: 2.5px;
+}
+
+.user-section p {
+    line-height: 47px;
+    font-size: 16px;
+    font-weight: 500;
+    color: #f7f8f8;
+    margin: 0 0 0 10px;
+}
+
+
+/* subheader */
+
+.nav_bar {
+    overflow: hidden;
+    background-color: #02101b;
+}
+
+.nav_bar a {
+    float: left;
+    font-size: 13px;
+    color: white;
+    text-align: center;
+    padding: 5px 15px;
+    text-decoration: none;
+    cursor: pointer;
+    font-weight: 400;
+}
+
+.dropdown {
+    float: left;
+    overflow: hidden;
+    position: unset;
+}
+
+.dropdown .dropbtn {
+    font-size: 13px;
+    border: none;
+    outline: none;
+    color: white;
+    padding: 5px 16px;
+    background-color: inherit;
+    font-family: inherit;
+    margin: 0;
+    font-weight: 400;
+}
+
+.nav_bar a:hover,
+.dropdown:hover .dropbtn {
+    background-color: #8a8a8a;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    cursor: pointer;
+    width: 275px;
+}
+
+.dropdown-content a {
+    float: none;
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+    cursor: pointer;
+}
+
+.dropdown-content a:hover {
+    background-color: #ddd;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.header_block {
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 100;
+}
+
+.breadcrumb {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0.2rem 1rem;
+    margin-bottom: .5rem;
+    list-style: none;
+    background-color: #e9ecef;
+    border-radius: .25rem;
+}
+
+.brand-text h3 {
+    font-size: 20px;
+}
+
+.text-width-right {
+    width: 18%;
+    text-align: right;
+    color: #fff;
+    padding-top: 5px;
+    float: right;
+}
+
+.staging {
+    color: red !important;
+    float: left !important;
+    overflow: hidden !important;
+    position: unset !important;
+    padding: 5px 16px !important;
+}
+
+.staging_link {
+    float: none !important;
+    padding: 0px !important;
+    color: #007bff !important;
+}
+
+.staging_link:hover {
+    background-color: transparent !important;
+}
+
+.header-version-modal {
+    color: #007bff;
+}

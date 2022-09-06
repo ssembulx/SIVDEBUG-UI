@@ -1,0 +1,3 @@
+<div *ngIf="ChartType=== 1 || ChartType === 2"[attr.id]="chartdiv" [class]="chartSize=='s'? 'chartSmall':'chartbig'"></div>
+<div *ngIf="ChartType=== 3" [attr.id]="chartdiv" class="excutionChart"></div>
+<div *ngIf="ChartType=== 4" [attr.id]="chartdiv" class="defectTrend"></div>

@@ -1,0 +1,35 @@
+.ng-tr {
+    background: #555;
+    height: 105.6vh;
+    position: relative;
+    z-index: 101;
+}
+
+.par {
+    max-width: 913px;
+    margin: -33px auto auto;
+    background: #fff;
+    padding: 100px;
+    height: 100%;
+}
+
+.h2-pdClass {
+    font-size: 18px!important;
+    position: relative;
+    bottom: 58px;
+    display: block;
+    -webkit-margin-before: .83em;
+    margin-block-start: .83em;
+    -webkit-margin-after: .83em;
+    margin-block-end: .83em;
+    -webkit-margin-start: 0;
+    margin-inline-start: 0;
+    -webkit-margin-end: 0;
+    margin-inline-end: 0;
+}
+
+a {
+    background-color: transparent;
+    color: #337ab7;
+    text-decoration: none;
+}

@@ -1,0 +1,143 @@
+<div class="container-fluid" [class]="fullScreenFlag? 'fullscreen-width':''" *ngIf='mainChart && mainChart.data && mainChart.series'>
+    <ng-container>
+        <div class="chart-wrapper-title">
+            <div class="row  mr-3 ml-3">
+                <div class="col-8 p-0">
+                    <div class="caption">
+                        <i class="fa fa-chart-bar fa-2x" style="color: #9eacb4;font-size: 22px;margin-top: -1px;"></i>
+                        <span class="chart-header"> {{triageAccuracyData._heading}}</span>
+                        <span class="chart-header" style="font-size: 15px;"> ( Data Source: HSDES )</span>
+                    </div>
+                </div>
+                <div class="col-4 p-0">
+                    <!--  <mat-icon (click)="getfullScreen()" class="icon-fullscreen float-right mt-2" [matTooltip]="fullScreenFlag? ' Exit fullscreen':'Fullscreen'" aria-hidden="false" aria-label="Example home icon">open_in_full</mat-icon> -->
+
+                    <div class="float-right mt_8 mr-2">
+                        <!-- <label [ngClass]="{'active_duration': duration === 'Year'}" class="mb-0 btn btn-transparent blue-oleo btn-no-border btn-outline btn-circle btn-sm mr-1" (click)="onValChange('Year')">Year</label> -->
+                        <label [ngClass]="{'active_duration': duration === 'Defect'}" class="mb-2 btn btn-transparent blue-oleo btn-no-border btn-outline btn-circle btn-sm mr-1" (click)="onValChange('Defect')">Defect</label>
+                        <label [ngClass]="{'active_duration': duration === 'Sighting'}" class="mb-2 btn btn-transparent blue-oleo btn-no-border btn-outline btn-circle btn-sm mr-1" (click)="onValChange('Sighting')">Sighting</label>
+                        <label class="active_duration mb-2 btn btn-transparent blue-oleo btn-no-border btn-outline btn-circle btn-sm" (click)="openLg(content)"><i class="fa fa-info-circle" aria-hidden="true"></i></label>
+                    </div>
+                    <!--   <div class="float-right mt_8 mr-2">
+                        <button mat-button class="custom_filter_btn p-0" [matMenuTriggerFor]="menuGroup" [matTooltip]="selectedGroupDomain">{{selectedGroupDomain}}<mat-icon>arrow_drop_down</mat-icon></button>
+                        <mat-menu #menuGroup="matMenu">
+                            <button mat-menu-item (click)="onGroupValChange('Group Domain')">All Group Domain</button>
+                            <button mat-menu-item *ngFor="let plat of groupDomainList" [value]="plat.coeGroupName" (click)="onGroupValChange(plat.coeGroupName)">{{plat.coeGroupName}}</button>
+                            <button mat-menu-item class="add_group_details" (click)="openAddGroupDetails()">
+                                Add GroupCOE Details
+                                <span class="material-icons add_group_coe_option_icon">
+                                add_box
+                                </span></button>
+                        </mat-menu>
+                    </div> -->
+                    <!-- <div class="float-right mt_8 mr-2">
+                        <button mat-button class="custom_filter_btn p-0" [matMenuTriggerFor]="menu" [matTooltip]="selected">{{selected}}<mat-icon>arrow_drop_down</mat-icon></button>
+                        <mat-menu #menu="matMenu">
+                            <button mat-menu-item (click)="onPlatformValChange('Platform')">All Platform</button>
+                            <button mat-menu-item *ngFor="let plat of platformslist" [value]="plat.platformNames" (click)="onPlatformValChange(plat.platformNames)">{{plat.platformNames}}</button>
+                        </mat-menu>
+                    </div> -->
+                </div>
+            </div>
+            <hr />
+            <!--  <cqi-chart chartdiv="chartdiv" [chartInfo]='mainChart' [ChartType]='1' [ChartData]='mainChart.data' [Series]='mainChart.series'></cqi-chart> -->
+            <div [style.visibility]="chartView? 'visible': 'hidden'">
+                <div id="chartdiv"></div>
+            </div>
+            <!--   <div *ngIf="loader">
+                <div class="loader"></div>
+            </div> -->
+            <ngx-spinner bdColor="rgba(255,255,255,0.8)" size="medium" color="#0071c5" type="line-scale" [fullScreen]="true">
+                <p style="color: #0071c5; font-size: 16px;font-weight: 600;"> Processing... </p>
+            </ngx-spinner>
+            <div class="no_data_block" *ngIf="noDataFound">
+                <img src="./assets/IMG/paper.svg">
+                <h1 class="mt-2">No Record Found</h1>
+            </div>
+        </div>
+    </ng-container>
+</div>
+<!-- 
+<div class="row" style="margin-top: 1.5%;">
+    <div class="col-sm-12 mb-1 bg-white rounded" style="margin-left:1px;margin-right:1px;">
+        <div class="row">
+            <div class="md-4 mb-4 bg-white col-sm-4" style="height:328px;" *ngFor="let latestchange of latestchangesArray;let i=index">
+                <cqi-legend [model]=latestchange [smallchart]="'smallchart'+i" [ChartType]='2' [ChartData]='chartInfo.data' [idx]='i' (legendClickEvent)='legendClickEvent($event)'></cqi-legend>
+            </div>
+        </div>
+    </div>
+</div> -->
+
+<div class="slider_block" *ngIf="enableSlider">
+    <div class="slider_header">
+        <h4 class="modal-title mb-0">Add GroupCOE Details</h4>
+        <button type="button" class="close" (click)="closeSlider()">&times;</button>
+    </div>
+    <div class="slider_body w-100 float-left pt-3">
+        <div class="col-12 p-0 float-left">
+            <div class="col-12 float-left">
+                <mat-form-field class="example-full-width w-100">
+                    <mat-label>Domain Name</mat-label>
+                    <input matInput placeholder="Enter Domain Name" [(ngModel)]="domainName" (input)="userMetrics($event.target.value)">
+                </mat-form-field>
+            </div>
+            <div class="col-12 float-left">
+                <mat-form-field class="example-full-width w-100">
+                    <mat-label>COEGroup</mat-label>
+                    <mat-select (selectionChange)="onAddCOEValChange($event.value)">
+                        <mat-option *ngFor="let plat of groupDomainConfig" [value]="plat.coeGroup">{{plat.coeGroup}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+    </div>
+    <div class="slider_footer w-100 float-left">
+        <button mat-raised-button color="primary" class="float-right btn_color" (click)="addCOE()">Save</button>
+        <button mat-raised-button class="float-right mr-2" (click)="closeSlider()">Close</button>
+    </div>
+</div>
+
+<ng-template #content let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title mb-0" style="font-size: 20px;">Gen Internal Sightings / Defect Trend Information</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+        <div class="row m-0">
+            <div class="col-12 p-0">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Closed Date</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Reason</th>
+                            <th scope="col">Closed Reason</th>
+                            <th scope="col">Submit Org</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let latestchange of dcrInformation;let i=index">
+                            <th scope="row">{{i+1}}</th>
+                            <td *ngIf="latestchange.closed_date == ''">-</td>
+                            <td *ngIf="latestchange.closed_date != ''">{{latestchange.closed_date}}</td>
+                            <td *ngIf="latestchange.status == ''">-</td>
+                            <td *ngIf="latestchange.status != ''">{{latestchange.status}}</td>
+                            <td *ngIf="latestchange.status_reason == ''">-</td>
+                            <td *ngIf="latestchange.status_reason != ''">{{latestchange.status_reason}}</td>
+                            <td *ngIf="latestchange.closed_reason == ''">-</td>
+                            <td *ngIf="latestchange.closed_reason != ''">{{latestchange.closed_reason}}</td>
+                            <td *ngIf="latestchange.submitter_org == ''">-</td>
+                            <td *ngIf="latestchange.submitter_org != ''">{{latestchange.submitter_org}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Close</button>
+    </div>
+</ng-template>

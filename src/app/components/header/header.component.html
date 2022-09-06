@@ -1,0 +1,93 @@
+<div class="header_block">
+    <section class="header-top">
+        <div class="header-wrapper">
+            <div class="brand-text">
+                <h3>Sighting Accuracy & Efficiency Indicator</h3>
+            </div>
+            <div class="left-header">
+                <div class="jarvis-logo">
+                    <a href="/" routerlink="/" ng-reflect-router-link="/">
+                        <img alt="logo" class="jarvis-logo__brand" src="./assets/IMG/SIV1.png">
+                    </a>
+                </div>
+            </div>
+            <div class="right-header">
+                <div class="user-section version-heading"><img [src]="userInfo?.avatarURL" class="avatar" alt="user image" onerror="this.src='https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/default-avatar.png';">
+                    <p>{{userInfo?.name}}</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="second-header">
+        <div class="nav_bar">
+            <ng-container *ngFor="let item of SideNavMenu; let i = index">
+                <a (click)="onSelectTab(item.url)" *ngIf="!item.isSubHeading">{{item.menu}}</a>
+                <div class="dropdown" *ngIf="item.isSubHeading">
+                    <button class="dropbtn">{{item.menu}} 
+                <i class="fa fa-caret-down"></i>
+              </button>
+                    <div class="dropdown-content">
+                        <ng-container *ngFor="let ite of item.subHeadingList; let j = index">
+                            <a (click)="onSelectTab(ite.url)">{{ite.menu}} <span *ngIf="ite.menu!='DCR' && ite.menu!='Milestone Blockers' && ite.menu!='triage-accuracy' && ite.menu!='Sighting Defect DCR trend' && ite.menu!='Overall Ageing  Backlog trend' && ite.menu!='Closed Sighting and Defect ageing / TPT' && ite.menu!='Triage latency' && ite.menu!='BugAssist usage'  && ite.menu!='Breakup of days metrics'&& ite.menu!='HSD promote statistics'" class="badge badge-pill badge-info">Beta</span></a>
+                        </ng-container>
+                    </div>
+                </div>
+            </ng-container>
+            <!--   <ng-container>
+                <div class="staging">This is a staging site, for production indicators please <a class="staging_link" href=" https://sivdebugindicator.intel.com/#/home" target="_blank"> click here </a></div>
+            </ng-container> -->
+            <ng-container>
+                <div class="text-width-right">
+                    <div style="margin-right: 2%;"><span>{{releaseNote[0].version}} <i aria-hidden="true" (click)="openReleaseNotes(releaseNotes)" class="fa fa-question-circle" style="padding-left: 2px; cursor: pointer;"></i></span></div>
+                </div>
+            </ng-container>
+        </div>
+    </section>
+    <!--  <section>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="#/home"><i class="fa fa-home" aria-hidden="true"></i> Home </a>
+                </li>
+                <li *ngIf="Pagetitle != 'home'" class="breadcrumb-item active">
+                    <span> {{Pagetitle}} </span>
+                </li>
+            </ol>
+        </nav>
+    </section> -->
+</div>
+<ng-template #releaseNotes let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title mb-0" style="font-size: 20px;">Release Notes</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body" style="padding: 10px 42px;">
+        <ng-container *ngFor="let item of releaseNote">
+            <h4 class="header-version-modal"> {{item.version}}</h4>
+            <p style="font-size: 14px;"> {{item.releaseDate}}</p>
+            <ul style="line-height: 3em;">
+                <li style="font-size: 14px;" *ngFor="let ite of item.releaseIteam"> {{ite}}</li>
+            </ul>
+        </ng-container>
+        <ng-container>
+            <h4 class="header-version-modal">Technology used</h4>
+            <!-- <p style="font-size: 14px;"> {{item.releaseDate}}</p> -->
+            <ul style="line-height: 3em;">
+                <li style="font-size: 14px;">
+                    {{link[0]}}
+                    <a href="{{link[1]}}" target="_blank">{{link[1]}} </a>
+                </li>
+                <ng-container *ngFor="let item of techInfo;let i = index">
+                    <li style="font-size: 14px;" *ngIf="i !=0">
+                        {{item.technologyInfo}}
+                    </li>
+                </ng-container>
+            </ul>
+        </ng-container>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Close</button>
+    </div>
+</ng-template>

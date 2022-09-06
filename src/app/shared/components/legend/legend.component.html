@@ -1,0 +1,31 @@
+<div class="row" style="margin-left:-4px;margin-right:-4px;margin-top:-17px;cursor: pointer;" (click)='legendClick(model.platformName)'>
+    <div class="col-sm-12">
+        <div class="health_box_width" name="health_box">
+            <div class="card card-stats" style="margin-bottom:10px!important;height:328px;border: 2px solid #e7ecf1;">
+                <div class="card-header  card-header-icon">
+                    <div class="card-icon" style="background-color: #0071c5;">
+                        <span><strong class="health_box_text"
+                                style="cursor:pointer; font-weight: bold; font-size: 25px;">{{model.platformName}}</strong></span>
+                    </div>
+                    <table class="table">
+                        <tr>
+                            <th scope="col">Platform</th>
+                            <th scope="col">Silicon</th>
+                            <th scope="col">Customer</th>
+                        </tr>
+                        <tr>
+                            <td>{{model.platform}}</td>
+                            <td>{{model.silicon}}</td>
+                            <td>{{model.customer}}</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="card-footer" style="height:3px;" [ngStyle]="{'background-color':model.colorCode}">
+                </div>
+                <cqi-chart class="smallchart" [chartdiv]="smallchart" [lineSeriesValue]='lineSeriesValue'
+                    [ChartType]='ChartType' [ChartData]='ChartData' [idx]=idx> </cqi-chart>
+            </div>
+        </div>
+    </div>
+
+</div>

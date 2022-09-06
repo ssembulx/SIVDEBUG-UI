@@ -1,0 +1,21 @@
+.chartbig {
+    width: 100%;
+    height: 70vh;
+    /* border: 2px solid #e7ecf1; */
+}
+
+.chartSmall {
+    width: 100%;
+    height: 230px;
+}
+
+.excutionChart {
+    width: 100%;
+    height: 275px;
+}
+
+.defectTrend {
+    width: 100%;
+    height: 70vh;
+    margin-top: 3%;
+}
