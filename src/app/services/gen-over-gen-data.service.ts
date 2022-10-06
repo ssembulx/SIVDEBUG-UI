@@ -1032,6 +1032,17 @@ export class GenOverGenDataService {
         }
       });
   }
+
+   /* get Vendor list */
+   getVendor(): Observable<any> {
+    const serviceUrl = `${environment.baseURL}api/SIVDebug/VedorDetails`;
+    return this.http.post(serviceUrl,
+      {
+        headers: {
+          'Content-type': 'application/json'
+        }
+      });
+  }
   /* get download list */
   getDownloadData(data): Observable<any> {
     const serviceUrl = `${environment.baseURL}api/SIVDebug/GetDCRdownload`;

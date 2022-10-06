@@ -108,6 +108,7 @@ export class BugAssistWatcherAdoptionIndicatorComponent implements OnInit {
     this.dataSourcePlatform = new MatTreeFlatDataSource(this.treeControlPlatform, this.treeFlattenerPlatform);
     this.dataSourcePlatform = new MatTreeFlatDataSource(this.treeControlPlatform, this.treeFlattenerPlatform);
     this.getPlatformData();
+    this.getVendorData()
     this.dataSourcePlatform.data = TREE_DATA;
     /* platform end */
 
@@ -145,6 +146,11 @@ export class BugAssistWatcherAdoptionIndicatorComponent implements OnInit {
       .subscribe(() => {
         this.filterExposureMulti();
       });
+    // listen for search field value changes
+    this.vendorFilterCtrl.valueChanges
+      .subscribe(() => {
+        this.filterVendorMulti();
+      });
   }
 
   ngOnDestroy() {
@@ -162,9 +168,19 @@ export class BugAssistWatcherAdoptionIndicatorComponent implements OnInit {
   platformslist;
   selected = "Platform";
   selectedExposure = "Exposure"
+  selectedVendor = "Vendor"
   exposerList; tempList; tempListExposure;
   preSelected = [];
   selectedTXT;
+  vendorList; tempListVendor;
+  getVendorData() {
+    this.dataSvc.getVendor().subscribe(res => {
+      if (res) {
+        this.vendorList = res.vendorIdDetails;
+        this.tempListVendor = this.vendorList;
+      }
+    });
+  }
   getPlatformData() {
     this.dataSvc.getPlatform().subscribe(res => {
       if (res) {
@@ -382,6 +398,22 @@ export class BugAssistWatcherAdoptionIndicatorComponent implements OnInit {
     yAxis.renderer.labels.template.fontSize = 12;
     yAxis.renderer.minGridDistance = 20;
 
+    let ycumAxis = chart.yAxes.push(new am4charts.ValueAxis());
+    /*  if (chart.yAxes.indexOf(valueAxis) != 0) {
+       valueAxis.syncWithAxis = chart.yAxes.getIndex(0);
+     } */
+    ycumAxis.min = 0;
+    ycumAxis.renderer.opposite = true;
+    ycumAxis.renderer.grid.template.disabled = true;
+    ycumAxis.title.text = '[bold] BugAssist Watcher Complete';
+    ycumAxis.renderer.labels.template.fill = am4core.color("#000000");
+    ycumAxis.renderer.labels.template.fontSize = 12;
+    ycumAxis.renderer.line.strokeOpacity = 1;
+    ycumAxis.renderer.line.strokeWidth = 1;
+    /*    ycumAxis.renderer.line.stroke = am4core.color("#fdd400");
+       ycumAxis.renderer.labels.template.fill = am4core.color("#fdd400"); */
+    /* valueAxis.renderer.minGridDistance = 30; */
+
     function createSeries(value, name) {
       let series = chart.series.push(new am4charts.ColumnSeries())
       series.dataFields.valueY = value
@@ -488,6 +520,39 @@ export class BugAssistWatcherAdoptionIndicatorComponent implements OnInit {
         valueLabelTA.label.dx = -20; */
     }
     createTraigeLineSeries();
+
+    function createcumSightingSubmittedSeries() {
+      var lineSeries = chart.series.push(new am4charts.LineSeries());
+      lineSeries.name = "BugAssist Watcher Complete";
+      lineSeries.dataFields.valueY = "watcherPercentage_complete";
+      lineSeries.id = 'g1';
+      lineSeries.dataFields.categoryX = "chartType";
+      lineSeries.yAxis = ycumAxis;
+      lineSeries.strokeDasharray = "8,4";
+      lineSeries.stroke = am4core.color("#e91e63"); //pink
+      lineSeries.strokeWidth = 2;
+      lineSeries.propertyFields.strokeDasharray = "lineDash";
+      lineSeries.tooltip.label.textAlign = "middle";
+      //lineSeries.numberFormatter.numberFormat = "#'%'";
+      /*  lineSeries.tensionX = 0.8;
+       lineSeries.showOnInit = true; */
+
+      var bullet = lineSeries.bullets.push(new am4charts.Bullet());
+      bullet.fill = am4core.color("#e91e63"); // tooltips grab fill from parent by default
+      // bullet.tooltipText = "[#fff font-size: 14px]{name} in {categoryX}:\n[/][#fff font-size: 20px]{valueY}[/] [#fff]{additional}[/]"
+      bullet.tooltipText = "[#000 font-size: 14px]{name} : [/][#000 font-size: 14px]{valueY}[/]";
+      var circle = bullet.createChild(am4core.Circle);
+      circle.radius = 3;
+      circle.fill = am4core.color("#fff");
+      circle.strokeWidth = 2;
+
+      /*  var valueLabel = lineSeries.bullets.push(new am4charts.LabelBullet());
+       valueLabel.label.text = "{valueY.formatNumber('#.a')}";
+       valueLabel.label.fontSize = 12;
+       valueLabel.label.dy = 0;
+       valueLabel.label.dx = -20; */
+    }
+    createcumSightingSubmittedSeries();
 
     function createBacklogLineSeries() {
 
@@ -725,6 +790,7 @@ export class BugAssistWatcherAdoptionIndicatorComponent implements OnInit {
   platformPlaceholderTxt = "Platform";
   groupDomainPlaceholderTxt = "Group Domain";
   exposurePlaceholderTxt = "Exposure";
+  vendorPlaceholderTxt = "Vendor";
   selectedSKU = "SKU";
   selectedSKUID = '';
   toggleAllSelection(data) {
@@ -1091,6 +1157,8 @@ export class BugAssistWatcherAdoptionIndicatorComponent implements OnInit {
   /* exposure start */
   @ViewChild('selectexposure') selectexposure: MatSelect;
 
+  @ViewChild('selectvendor') selectvendor: MatSelect;
+
   allExposure = true;
   toggleAllExposure(data) {
     this.exposurePlaceholderTxt = "";
@@ -1202,6 +1270,31 @@ export class BugAssistWatcherAdoptionIndicatorComponent implements OnInit {
 
   /** control for the selected bank for multi-selection */
   public exposureMultiCtrl: FormControl = new FormControl();
+
+  /* exposure search end */
+  public vendorFilterCtrl: FormControl = new FormControl();
+
+  /** control for the selected bank for multi-selection */
+  public vendorMultiCtrl: FormControl = new FormControl();
+
+  protected filterVendorMulti() {
+
+    if (!this.vendorList) {
+      return;
+    }
+    // get the search keyword
+    let search = this.vendorFilterCtrl.value;
+    if (!search) {
+      this.vendorList = this.tempListVendor;
+      return;
+    } else {
+      search = search.toLowerCase();
+    }
+    // console.log("before", this.exposerList);
+    this.vendorList = this.tempListVendor.filter(function (e) {
+      return e.exposure.toLowerCase().indexOf(search) > -1
+    });
+  }
 
   protected filterExposureMulti() {
 

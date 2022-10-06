@@ -14,7 +14,7 @@ export class AuthGuard implements CanActivate {
 
     }
     /* local */
-     canActivate(route: ActivatedRouteSnapshot): Observable<boolean> | Promise<boolean> | boolean {
+   /*   canActivate(route: ActivatedRouteSnapshot): Observable<boolean> | Promise<boolean> | boolean {
         return new Promise(res => {
             this.dataSvc.getESService(0).subscribe((active: any) => {
                 if (active.responses) {
@@ -40,9 +40,9 @@ export class AuthGuard implements CanActivate {
                 }
             });
         });
-    } 
+    }  */
     /* server */
-  /*   async canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+    async canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
         if (!this.helper.token) {
             let userToken: any = await this.dataSvc.GetToken();
             const payload = { "userToken": userToken.token }
@@ -58,6 +58,6 @@ export class AuthGuard implements CanActivate {
         } else {
             return true
         }
-    } */
+    }
 }
 
