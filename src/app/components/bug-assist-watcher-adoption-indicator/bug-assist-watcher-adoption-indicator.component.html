@@ -212,7 +212,10 @@
                                     <!-- <mat-option (click)="toggleAllExposure($event)" *ngIf="plat.exposure =='All Exposure'" [value]="plat.exposure">
                                         {{plat.exposure}}
                                     </mat-option> -->
-                                    <mat-option [value]="plat.vendarname">
+                                    <mat-option (click)="optionClickOrganization()" *ngIf="plat.vendarname !='All Organization'" [value]="plat.vendorid">
+                                        {{plat.vendarname}}
+                                    </mat-option>
+                                    <mat-option (click)="toggleAllOrganization($event)" *ngIf="plat.vendarname =='All Organization'" [value]="plat.vendorid">
                                         {{plat.vendarname}}
                                     </mat-option>
                                 </ng-container>

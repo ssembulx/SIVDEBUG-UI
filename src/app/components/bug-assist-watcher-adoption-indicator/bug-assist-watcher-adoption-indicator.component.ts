@@ -168,7 +168,7 @@ export class BugAssistWatcherAdoptionIndicatorComponent implements OnInit {
   platformslist;
   selected = "Platform";
   selectedExposure = "Exposure"
-  selectedVendor = "Vendor"
+  selectedVendor = "Organization"
   exposerList; tempList; tempListExposure;
   preSelected = [];
   selectedTXT;
@@ -177,6 +177,7 @@ export class BugAssistWatcherAdoptionIndicatorComponent implements OnInit {
     this.dataSvc.getVendor().subscribe(res => {
       if (res) {
         this.vendorList = res.vendorIdDetails;
+        this.vendorList.unshift({ "vendarname": "All Organization", "vendorid": 0 });
         this.tempListVendor = this.vendorList;
       }
     });
@@ -198,7 +199,7 @@ export class BugAssistWatcherAdoptionIndicatorComponent implements OnInit {
         this.selected = arrData.join(',');
         this.selectedTXT = this.selected;
         this.allSelected = false;
-        this.getDSI("Year", "Group Domain", "SKU", this.selected);
+        this.getDSI("Year", "Group Domain", "SKU", this.selected, "Exposure", "Organization");
         this.tempList = res.platformslist;
         // this.dataShare.changeplatformList(res.platformslist)
         this.exposerList = res.exploserfilterlists;
@@ -237,7 +238,7 @@ export class BugAssistWatcherAdoptionIndicatorComponent implements OnInit {
   dcrInformation;
   isDomainGroup = true;
   isPlatform = true;
-  getDSI(duration?: string, groupDomain?: string, SKUIDcombination?: string, platform?: string, exposure?: String) {
+  getDSI(duration?: string, groupDomain?: string, SKUIDcombination?: string, platform?: string, exposure?: String, vendor?: String) {
     this.spinner.show();
     this.chartView = false;
     this.noDataFound = false;
@@ -253,12 +254,16 @@ export class BugAssistWatcherAdoptionIndicatorComponent implements OnInit {
     if (SKUIDcombination == 'SKU') {
       SKUIDcombination = '';
     }
+    if (vendor == 'Organization') {
+      vendor = '';
+    }
     let data = {
       "chartType": duration,
       "groupName": groupDomain,
       "platform": platform,
       "exposure": exposure,
       "skuiDcombination": SKUIDcombination,
+      "Vendorid": vendor
     }
     this.dataSvc.getBugAssistWatcherAdoption(data).subscribe(res => {
       if (res) {
@@ -291,7 +296,7 @@ export class BugAssistWatcherAdoptionIndicatorComponent implements OnInit {
   /* apply filter  */
   applyFilter() {
     this.chartView = true;
-    this.getDSI(this.duration, this.selectedGroupDomain, this.selectedSKUID, this.selected, this.selectedExposure);
+    this.getDSI(this.duration, this.selectedGroupDomain, this.selectedSKUID, this.selected, this.selectedExposure, this.selectedVendor);
   }
 
   /* reset filter  */
@@ -790,7 +795,7 @@ export class BugAssistWatcherAdoptionIndicatorComponent implements OnInit {
   platformPlaceholderTxt = "Platform";
   groupDomainPlaceholderTxt = "Group Domain";
   exposurePlaceholderTxt = "Exposure";
-  vendorPlaceholderTxt = "Vendor";
+  vendorPlaceholderTxt = "Organization";
   selectedSKU = "SKU";
   selectedSKUID = '';
   toggleAllSelection(data) {
@@ -1157,8 +1162,6 @@ export class BugAssistWatcherAdoptionIndicatorComponent implements OnInit {
   /* exposure start */
   @ViewChild('selectexposure') selectexposure: MatSelect;
 
-  @ViewChild('selectvendor') selectvendor: MatSelect;
-
   allExposure = true;
   toggleAllExposure(data) {
     this.exposurePlaceholderTxt = "";
@@ -1240,6 +1243,89 @@ export class BugAssistWatcherAdoptionIndicatorComponent implements OnInit {
   }
   /* exposure end */
 
+  /* Organization start */
+  allVendor = true;
+  @ViewChild('selectvendor') selectvendor: MatSelect;
+  optionClickOrganization() {
+    this.vendorPlaceholderTxt = "";
+    /* let newStatus = true; */
+    this.selectedVendor = "";
+    this.allVendor = true;
+    this.selectvendor.options.forEach((item: MatOption) => {
+      if (!item.selected) {
+        /* newStatus = false; */
+        /*  this.spinner.show();
+         this.chartView = false; */
+      } else if (item.selected) {
+        /*  this.spinner.show();
+         this.chartView = false; */
+        if (this.selectedVendor == "Organization" || this.selectedVendor == "") {
+          this.selectedVendor = item.value;
+        } else {
+          this.selectedVendor = this.selectedVendor + ',' + item.value;
+        }
+      }
+    });
+    /* this.allExposure = newStatus; */
+    if (this.selectedVendor == '') {
+      this.vendorPlaceholderTxt = "Organization";
+      this.selectedVendor = "Organization";
+    }
+    let arrData = this.selectedVendor.split(",");
+    arrData.forEach((d, index) => {
+      if (d == "undefined") {
+        arrData.splice(index, 1);
+      }
+    });
+    arrData.forEach((d, index) => {
+      if (d == "0") {
+        arrData.splice(index, 1);
+      }
+    });
+    this.selectedVendor = arrData.join(',');
+    this.vendorPlaceholderTxt = arrData.join(',');
+    //  this.getDSI(this.duration, this.selectedGroupDomain, this.selectedSKUID, this.selected, this.selectedExposure);
+  }
+  toggleAllOrganization(data) {
+    this.vendorPlaceholderTxt = "";
+    // this.allExposure = data.checked;
+    this.selectedVendor = "";
+    if (this.allVendor) {
+      this.selectvendor.options.forEach((item: MatOption) => {
+        item.select();
+        if (item.selected) {
+          if (this.selectedVendor == "") {
+            this.selectedVendor = item.value;
+          } else {
+            this.selectedVendor = this.selectedVendor + ',' + item.value;
+          }
+        }
+      });
+      this.allVendor = false;
+      let arrData = this.selectedVendor.split(",");
+      arrData.forEach((d, index) => {
+        if (d == "undefined") {
+          arrData.splice(index, 1);
+        }
+      });
+      arrData.forEach((d, index) => {
+        if (d == "0") {
+          arrData.splice(index, 1);
+        }
+      });
+      this.selectedVendor = arrData.join(',');
+      this.vendorPlaceholderTxt = arrData.join(',');
+      //  this.getDSI(this.duration, this.selectedGroupDomain, this.selectedSKUID, this.selected, this.selectedExposure);
+    } else {
+      this.vendorPlaceholderTxt = "Organization";
+      this.selectedVendor = "Organization";
+      this.selectvendor.options.forEach((item: MatOption) => item.deselect());
+      this.allVendor = true;
+      //  this.getDSI(this.duration, this.selectedGroupDomain, this.selectedSKUID, this.selected, this.selectedExposure);
+    }
+  }
+  /* Organization end */
+
   /* platform search */
   public bankMultiFilterCtrl: FormControl = new FormControl();
 
@@ -1292,7 +1378,7 @@ export class BugAssistWatcherAdoptionIndicatorComponent implements OnInit {
     }
     // console.log("before", this.exposerList);
     this.vendorList = this.tempListVendor.filter(function (e) {
-      return e.exposure.toLowerCase().indexOf(search) > -1
+      return e.vendarname.toLowerCase().indexOf(search) > -1
     });
   }
 

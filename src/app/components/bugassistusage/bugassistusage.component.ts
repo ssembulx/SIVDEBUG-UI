@@ -107,6 +107,7 @@ export class BugassistusageComponent implements OnInit, OnDestroy {
     this.dataSourcePlatform = new MatTreeFlatDataSource(this.treeControlPlatform, this.treeFlattenerPlatform);
     this.dataSourcePlatform = new MatTreeFlatDataSource(this.treeControlPlatform, this.treeFlattenerPlatform);
     this.getPlatformData();
+    this.getVendorData();
     this.dataSourcePlatform.data = TREE_DATA;
     /* platform end */
 
@@ -161,9 +162,20 @@ export class BugassistusageComponent implements OnInit, OnDestroy {
   platformslist;
   selected = "Platform";
   selectedExposure = "Exposure"
+  selectedVendor = "Organization"
   exposerList; tempList; tempListExposure;
   preSelected = [];
   selectedTXT;
+  vendorList; tempListVendor;
+  getVendorData() {
+    this.dataSvc.getVendor().subscribe(res => {
+      if (res) {
+        this.vendorList = res.vendorIdDetails;
+        this.vendorList.unshift({ "vendarname": "All Organization", "vendorid": 0 });
+        this.tempListVendor = this.vendorList;
+      }
+    });
+  }
   getPlatformData() {
     this.dataSvc.getPlatform().subscribe(res => {
       if (res) {
@@ -181,7 +193,8 @@ export class BugassistusageComponent implements OnInit, OnDestroy {
         this.selected = arrData.join(',');
         this.selectedTXT = this.selected;
         this.allSelected = false;
-        this.getDSI("Year", "Group Domain", "SKU", this.selected);
+        //   this.getDSI("Year", "Group Domain", "SKU", this.selected);
+        this.getDSI("Year", "Group Domain", "SKU", this.selected, "Exposure", "Organization");
         this.tempList = res.platformslist;
         // this.dataShare.changeplatformList(res.platformslist)
         this.exposerList = res.exploserfilterlists;
@@ -220,7 +233,7 @@ export class BugassistusageComponent implements OnInit, OnDestroy {
   dcrInformation;
   isDomainGroup = true;
   isPlatform = true;
-  getDSI(duration?: string, groupDomain?: string, SKUIDcombination?: string, platform?: string, exposure?: String) {
+  getDSI(duration?: string, groupDomain?: string, SKUIDcombination?: string, platform?: string, exposure?: String, vendor?: String) {
     this.spinner.show();
     this.chartView = false;
     this.noDataFound = false;
@@ -236,17 +249,21 @@ export class BugassistusageComponent implements OnInit, OnDestroy {
     if (SKUIDcombination == 'SKU') {
       SKUIDcombination = '';
     }
+    if (vendor == 'Organization') {
+      vendor = '';
+    }
     let data = {
       "chartType": duration,
       "groupName": groupDomain,
       "platform": platform,
       "exposure": exposure,
       "skuiDcombination": SKUIDcombination,
+      "Vendorid": vendor
     }
     this.dataSvc.getBugAssistAdoptionPercent(data).subscribe(res => {
       if (res) {
         this.getDcrDetailsList = res.adoptionPercentage;
-          this.dcrInformation = res.informationicon;
+        this.dcrInformation = res.informationicon;
         /* this.dcrInformation.forEach((d, index) => {
           var keyNames = Object.keys(d);
           if (keyNames.indexOf("domaingroup") !== -1) {
@@ -274,7 +291,7 @@ export class BugassistusageComponent implements OnInit, OnDestroy {
   /* apply filter  */
   applyFilter() {
     this.chartView = true;
-    this.getDSI(this.duration, this.selectedGroupDomain, this.selectedSKUID, this.selected, this.selectedExposure);
+    this.getDSI(this.duration, this.selectedGroupDomain, this.selectedSKUID, this.selected, this.selectedExposure, this.selectedVendor);
   }
 
   /* reset filter  */
@@ -724,6 +741,7 @@ export class BugassistusageComponent implements OnInit, OnDestroy {
   platformPlaceholderTxt = "Platform";
   groupDomainPlaceholderTxt = "Group Domain";
   exposurePlaceholderTxt = "Exposure";
+  vendorPlaceholderTxt = "Organization";
   selectedSKU = "SKU";
   selectedSKUID = '';
   toggleAllSelection(data) {
@@ -1171,6 +1189,89 @@ export class BugassistusageComponent implements OnInit, OnDestroy {
   }
   /* exposure end */
 
+  /* Organization start */
+  allVendor = true;
+  @ViewChild('selectvendor') selectvendor: MatSelect;
+  optionClickOrganization() {
+    this.vendorPlaceholderTxt = "";
+    /* let newStatus = true; */
+    this.selectedVendor = "";
+    this.allVendor = true;
+    this.selectvendor.options.forEach((item: MatOption) => {
+      if (!item.selected) {
+        /* newStatus = false; */
+        /*  this.spinner.show();
+         this.chartView = false; */
+      } else if (item.selected) {
+        /*  this.spinner.show();
+         this.chartView = false; */
+        if (this.selectedVendor == "Organization" || this.selectedVendor == "") {
+          this.selectedVendor = item.value;
+        } else {
+          this.selectedVendor = this.selectedVendor + ',' + item.value;
+        }
+      }
+    });
+    /* this.allExposure = newStatus; */
+    if (this.selectedVendor == '') {
+      this.vendorPlaceholderTxt = "Organization";
+      this.selectedVendor = "Organization";
+    }
+    let arrData = this.selectedVendor.split(",");
+    arrData.forEach((d, index) => {
+      if (d == "undefined") {
+        arrData.splice(index, 1);
+      }
+    });
+    arrData.forEach((d, index) => {
+      if (d == "0") {
+        arrData.splice(index, 1);
+      }
+    });
+    this.selectedVendor = arrData.join(',');
+    this.vendorPlaceholderTxt = arrData.join(',');
+    //  this.getDSI(this.duration, this.selectedGroupDomain, this.selectedSKUID, this.selected, this.selectedExposure);
+  }
+  toggleAllOrganization(data) {
+    this.vendorPlaceholderTxt = "";
+    // this.allExposure = data.checked;
+    this.selectedVendor = "";
+    if (this.allVendor) {
+      this.selectvendor.options.forEach((item: MatOption) => {
+        item.select();
+        if (item.selected) {
+          if (this.selectedVendor == "") {
+            this.selectedVendor = item.value;
+          } else {
+            this.selectedVendor = this.selectedVendor + ',' + item.value;
+          }
+        }
+      });
+      this.allVendor = false;
+      let arrData = this.selectedVendor.split(",");
+      arrData.forEach((d, index) => {
+        if (d == "undefined") {
+          arrData.splice(index, 1);
+        }
+      });
+      arrData.forEach((d, index) => {
+        if (d == "0") {
+          arrData.splice(index, 1);
+        }
+      });
+      this.selectedVendor = arrData.join(',');
+      this.vendorPlaceholderTxt = arrData.join(',');
+      //  this.getDSI(this.duration, this.selectedGroupDomain, this.selectedSKUID, this.selected, this.selectedExposure);
+    } else {
+      this.vendorPlaceholderTxt = "Organization";
+      this.selectedVendor = "Organization";
+      this.selectvendor.options.forEach((item: MatOption) => item.deselect());
+      this.allVendor = true;
+      //  this.getDSI(this.duration, this.selectedGroupDomain, this.selectedSKUID, this.selected, this.selectedExposure);
+    }
+  }
+  /* Organization end */
+
   /* platform search */
   public bankMultiFilterCtrl: FormControl = new FormControl();
 
@@ -1221,6 +1322,32 @@ export class BugassistusageComponent implements OnInit, OnDestroy {
     });
   }
   /* platform search */
+
+
+  /* exposure search end */
+  public vendorFilterCtrl: FormControl = new FormControl();
+
+  /** control for the selected bank for multi-selection */
+  public vendorMultiCtrl: FormControl = new FormControl();
+
+  protected filterVendorMulti() {
+
+    if (!this.vendorList) {
+      return;
+    }
+    // get the search keyword
+    let search = this.vendorFilterCtrl.value;
+    if (!search) {
+      this.vendorList = this.tempListVendor;
+      return;
+    } else {
+      search = search.toLowerCase();
+    }
+    // console.log("before", this.exposerList);
+    this.vendorList = this.tempListVendor.filter(function (e) {
+      return e.vendarname.toLowerCase().indexOf(search) > -1
+    });
+  }
 
   /* Mat Tree start*/
   levels = new Map<GameNode, number>();

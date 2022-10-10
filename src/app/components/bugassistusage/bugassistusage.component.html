@@ -187,6 +187,41 @@
                             </mat-select>
                         </mat-form-field>
                     </div>
+                    <div class="float-right mt_8 mr-3">
+                        <!--  <button mat-button class="custom_filter_btn p-0" [matMenuTriggerFor]="menu" [matTooltip]="selected">{{selected}}<mat-icon>arrow_drop_down</mat-icon></button>
+                        <mat-menu #menu="matMenu">
+                            <button mat-menu-item (click)="onPlatformValChange('Platform')">All Platform</button>
+                            <button mat-menu-item *ngFor="let plat of platformslist" [value]="plat.platformNames" (click)="onPlatformValChange(plat.platformNames)">{{plat.platformNames}}</button>
+                        </mat-menu> -->
+                        <mat-form-field>
+                            <mat-select #selectvendor multiple [formControl]="vendorMultiCtrl" [matTooltip]="selectedVendor" placeholder="{{vendorPlaceholderTxt}}">
+                                <!--  <div class="select-all">
+                                    <mat-checkbox [(ngModel)]="allExposure" [checked]="allExposure" [ngModelOptions]="{standalone: true}" (change)="toggleAllExposure($event)">All Exposure</mat-checkbox>
+                                </div> -->
+
+                                <!-- <mat-option (onSelectionChange)="toggleAllSelection($event)" [value]="allSelected">
+                                    All Platform
+                                </mat-option> -->
+                                <mat-option>
+                                    <ngx-mat-select-search [formControl]="vendorFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="No Result Found"></ngx-mat-select-search>
+                                </mat-option>
+                                <ng-container *ngFor="let plat of vendorList">
+                                    <!--  <mat-option (click)="optionClickExposre()" *ngIf="plat.exposure !='All Exposure'" [value]="plat.exposure">
+                                        {{plat.exposure}}
+                                    </mat-option> -->
+                                    <!-- <mat-option (click)="toggleAllExposure($event)" *ngIf="plat.exposure =='All Exposure'" [value]="plat.exposure">
+                                        {{plat.exposure}}
+                                    </mat-option> -->
+                                    <mat-option (click)="optionClickOrganization()" *ngIf="plat.vendarname !='All Organization'" [value]="plat.vendorid">
+                                        {{plat.vendarname}}
+                                    </mat-option>
+                                    <mat-option (click)="toggleAllOrganization($event)" *ngIf="plat.vendarname =='All Organization'" [value]="plat.vendorid">
+                                        {{plat.vendarname}}
+                                    </mat-option>
+                                </ng-container>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
                 </div>
             </div>
             <hr />
