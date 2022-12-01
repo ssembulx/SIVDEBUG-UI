@@ -420,13 +420,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
       "exposure": exposure,
       "groupName": groupDomain,
       "platform": platform,
-      "skuiDcombination": SKUIDcombination
-
+      "skuiDcombination": SKUIDcombination,
+      "componentName": component,
+      "triagedby": triagedby
     }
     this.dataSvc.getTraiageAccuracywithGroupDomainDownload(dat).subscribe(res => {
       if (res) {
         this.triageLatencyDownloadData = res.traiageAccuracyDownloads;
-
       }
     });
   }
@@ -538,8 +538,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
       series.dataFields.categoryX = 'ww'
       series.name = name
       series.columns.template.tooltipText = "[#000 font-size:14px]{name}: {valueY}";
-      series.events.on("hidden", arrangeColumns);
-      series.events.on("shown", arrangeColumns);
+      /*  series.events.on("hidden", arrangeColumns);
+       series.events.on("shown", arrangeColumns); */
 
       let bullet = series.bullets.push(new am4charts.LabelBullet())
       bullet.interactionsEnabled = false
@@ -592,7 +592,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     /* Triage Accuracy */
-    if (this.selectedGroupDomain != "Group Domain" || this.initialLoad != true || this.selectedExposure != "Exposure") {
+    if (this.selectedGroupDomain != "Group Domain" || this.initialLoad != true || this.selectedExposure != "Exposure" || this.selectedComponent != "Component" || this.selectedtriagedby != "Triageby") {
       createSeries('triagePercent', 'Triage Accuracy(Dynamic based on filter)');
       /*    var lineSeriesTA = chart.series.push(new am4charts.LineSeries());
          lineSeriesTA.name = "Triage Accuracy(Dynamic based on filter)";
@@ -659,7 +659,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     /* Over All Triage Accuracy End*/
 
     /* Sighting going though triage process */
-    if (this.selectedGroupDomain != "Group Domain" || this.initialLoad != true || this.selectedExposure != "Exposure") {
+    if (this.selectedGroupDomain != "Group Domain" || this.initialLoad != true || this.selectedExposure != "Exposure" || this.selectedComponent != "Component" || this.selectedtriagedby != "Triageby") {
       createSeries('sightingPercent', '% Sighting going through triage process(Dynamic based on filter)');
       /*   var lineSeries = chart.series.push(new am4charts.LineSeries());
         lineSeries.name = "% Sighting going through triage process(Dynamic based on filter)";
@@ -793,7 +793,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.chartView = true;
     this.getTraiageAccuracy(this.duration, this.selectedGroupDomain, this.selectedSKUID, this.selected, this.selectedExposure, this.selectedComponent, this.selectedtriagedby);
     this.GetGroupDomainTraigeAccuracy(this.selected, this.selectedExposure, this.selectedSKUID);
-    this.getComponentDetails("");
+    // this.getComponentDetails(this.selected);
     // this.getTraiageAccuracy(this.duration, this.selectedGroupDomain, this.selectedSKUID, this.selected, this.selectedExposure);
   }
 
@@ -1128,7 +1128,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       this.platformPlaceholderTxt = arrData.join(',');
       //  this.getTraiageAccuracy(this.duration, this.selectedGroupDomain, this.selectedSKUID, this.selected, this.selectedExposure, this.selectedComponent, this.selectedtriagedby);
       //  this.GetGroupDomainTraigeAccuracy(this.selected, this.selectedExposure, this.selectedSKUID);
-      //  this.getComponentDetails(this.selected);
+      this.getComponentDetails(this.selected);
     } else {
       this.platformPlaceholderTxt = "Platform";
       this.selected = "Platform";
@@ -1138,6 +1138,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       //  this.getTraiageAccuracy(this.duration, this.selectedGroupDomain, this.selectedSKUID, this.selected, this.selectedExposure, this.selectedComponent, this.selectedtriagedby);
       // this.GetGroupDomainTraigeAccuracy(this.selected, this.selectedExposure, this.selectedSKUID);
       //  this.getComponentDetails("");
+      this.getComponentDetails(this.selected);
     }
   }
   optionClick(option, data, id) {
@@ -1210,7 +1211,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       this.deSelectChild(data, id);
       //  this.getTraiageAccuracy(this.duration, this.selectedGroupDomain, this.selectedSKUID, this.selected, this.selectedExposure, this.selectedComponent, this.selectedtriagedby);
       //  this.GetGroupDomainTraigeAccuracy(this.selected, this.selectedExposure, this.selectedSKUID);
-      //  this.getComponentDetails(this.selected);
+      this.getComponentDetails(this.selected);
     } else if (option == 'sku') {
       this.platformPlaceholderTxt = "";
       this.selectedSKUID = "";
@@ -1631,11 +1632,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.selectcomponent.options.forEach((item: MatOption) => {
       if (!item.selected) {
         /* newStatus = false; */
-        this.spinner.show();
-        this.chartView = false;
+        // this.spinner.show();
+        //  this.chartView = false;
       } else if (item.selected) {
-        this.spinner.show();
-        this.chartView = false;
+        // this.spinner.show();
+        //  this.chartView = false;
         if (this.selectedComponent == "Component" || this.selectedComponent == "") {
           this.selectedComponent = item.value;
         } else {
@@ -1661,7 +1662,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     });
     this.selectedComponent = arrData.join(',');
     this.componentDetailsPlaceholderTxt = arrData.join(',');
-    this.getTraiageAccuracy(this.duration, this.selectedGroupDomain, this.selectedSKUID, this.selected, this.selectedExposure, this.selectedComponent, this.selectedtriagedby);
+    // this.getTraiageAccuracy(this.duration, this.selectedGroupDomain, this.selectedSKUID, this.selected, this.selectedExposure, this.selectedComponent, this.selectedtriagedby);
     //  this.GetGroupDomainTraigeAccuracy(this.selected, this.selectedExposure, this.selectedSKUID);
   }
   /* comonent end */
@@ -1677,11 +1678,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.selecttriageby.options.forEach((item: MatOption) => {
       if (!item.selected) {
         /* newStatus = false; */
-        this.spinner.show();
-        this.chartView = false;
+        //  this.spinner.show();
+        // this.chartView = false;
       } else if (item.selected) {
-        this.spinner.show();
-        this.chartView = false;
+        //  this.spinner.show();
+        // this.chartView = false;
         if (this.selectedtriagedby == "Triageby" || this.selectedtriagedby == "") {
           this.selectedtriagedby = item.value;
         } else {
@@ -1707,7 +1708,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     });
     this.selectedtriagedby = arrData.join(',');
     this.triagebyPlaceholderTxt = arrData.join(',');
-    this.getTraiageAccuracy(this.duration, this.selectedGroupDomain, this.selectedSKUID, this.selected, this.selectedExposure, this.selectedComponent, this.selectedtriagedby);
+    // this.getTraiageAccuracy(this.duration, this.selectedGroupDomain, this.selectedSKUID, this.selected, this.selectedExposure, this.selectedComponent, this.selectedtriagedby);
     //  this.GetGroupDomainTraigeAccuracy(this.selected, this.selectedExposure, this.selectedSKUID);
   }
   /* Triageby end */

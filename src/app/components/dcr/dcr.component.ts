@@ -440,12 +440,12 @@ export class DcrComponent implements OnInit, OnDestroy {
     valueAxis.renderer.minGridDistance = 20;
 
     let range = valueAxis.axisRanges.create();
-    range.value = 78;
+    range.value = 80;
     range.grid.stroke = am4core.color("#ff0000");
     range.grid.strokeWidth = 1;
     range.grid.strokeOpacity = 1;
     range.label.inside = true;
-    range.label.text = "DCR Goal for Q3 2022 = 78%";
+    range.label.text = "DCR goal for Q4 2022 = 80%";
     range.label.fill = range.grid.stroke;
     //range.label.align = "right";
     range.label.verticalCenter = "bottom";
@@ -509,7 +509,7 @@ export class DcrComponent implements OnInit, OnDestroy {
     createSeries("filed_by_mistake", "Filed by Mistake", "filed_by_mistake_percentage");
     createSeries("test_test_env", "Test/Test env", "test_test_env_percentage");
     createSeries("duplicate", "Duplicate", "duplicate_percentage");
-    createSeries("inactive", "Inactive", "inactive_percentage");
+    /* createSeries("inactive", "Inactive", "inactive_percentage"); */
     createSeries("poor_sighting_quality", "Poor Sighting Quality", "poor_sighting_quality_percentage");
     createSeries("uncategorized", "Uncategorized [#FF0000]*[/]", "uncategorized_percentage");
 
@@ -754,12 +754,12 @@ export class DcrComponent implements OnInit, OnDestroy {
     vAxis.tooltip.disabled = true;
 
     let range = valueAxis.axisRanges.create();
-    range.value = 78;
+    range.value = 80;
     range.grid.stroke = am4core.color("#ff0000");
     range.grid.strokeWidth = 1;
     range.grid.strokeOpacity = 1;
     range.label.inside = true;
-    range.label.text = "DCR Goal for Q3 2022 = 78%";
+    range.label.text = "DCR goal for Q4 2022 = 80%";
     range.label.fill = range.grid.stroke;
     //range.label.align = "right";
     range.label.verticalCenter = "bottom";
@@ -802,7 +802,7 @@ export class DcrComponent implements OnInit, OnDestroy {
     createSeries("filed_by_mistake", "Filed by Mistake", "filed_by_mistake_percentage", "filed_by_mistake_Avgdays");
     createSeries("test_test_env", "Test/Test env", "test_test_env_percentage", "test_test_env_Avgdays");
     createSeries("duplicate", "Duplicate", "duplicate_percentage", "duplicate_Avgdays");
-    createSeries("inactive", "Inactive", "inactive_percentage", "inactive_Avgdays");
+    /* createSeries("inactive", "Inactive", "inactive_percentage", "inactive_Avgdays"); */
     createSeries("poor_sighting_quality", "Poor Sighting Quality", "poor_sighting_quality_percentage", "poor_sighting_quality_Avgdays");
     createSeries("uncategorized", "Uncategorized [#FF0000]*[/]", "uncategorized_percentage", "");
 

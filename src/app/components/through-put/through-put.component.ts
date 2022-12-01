@@ -388,8 +388,8 @@ export class ThroughPutComponent implements OnInit, OnDestroy {
       series.dataFields.categoryX = 'chartType'
       series.name = name;
       series.columns.template.tooltipText = "[font-size:14px]{name} : {valueY}";
-      series.events.on("hidden", arrangeColumns);
-      series.events.on("shown", arrangeColumns);
+    /*   series.events.on("hidden", arrangeColumns);
+      series.events.on("shown", arrangeColumns); */
 
       let bullet = series.bullets.push(new am4charts.LabelBullet())
       bullet.interactionsEnabled = false

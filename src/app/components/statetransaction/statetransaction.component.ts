@@ -144,7 +144,7 @@ export class StatetransactionComponent implements OnInit {
       .subscribe(() => {
         this.filterExposureMulti();
       });
-    this.selectedValToggleGroup = '0';
+    this.selectedValToggleGroup = 'All';
   }
 
   ngOnDestroy() {
@@ -188,7 +188,7 @@ export class StatetransactionComponent implements OnInit {
         this.selected = arrData.join(',');
         this.selectedTXT = this.selected;
         this.allSelected = false;
-        this.getDSI("Year", "Group Domain", "SKU", this.selected, "Exposure");
+        this.getDSI("Year", "Group Domain", "SKU", this.selected, "Exposure","All");
         this.GetGroupDomainTraigeAccuracy(this.selected, this.selectedExposure, "SKU", "Group Domain");
         this.tempList = res.platformslist;
         // this.dataShare.changeplatformList(res.platformslist)
@@ -235,7 +235,7 @@ export class StatetransactionComponent implements OnInit {
   dcrInformation;
   isDomainGroup = true;
   isPlatform = true;
-  getDSI(duration?: string, groupDomain?: string, SKUIDcombination?: string, platform?: string, exposure?: String) {
+  getDSI(duration?: string, groupDomain?: string, SKUIDcombination?: string, platform?: string, exposure?: String,selectedToggleGroup?:String) {
     this.spinner.show();
     this.chartView = false;
     this.noDataFound = false;
@@ -257,6 +257,7 @@ export class StatetransactionComponent implements OnInit {
       "Platform": platform,
       "Exposure": exposure,
       "SKUIDcombination": SKUIDcombination,
+      "Type":selectedToggleGroup
     }
     this.dataSvc.StateTransaction(data).subscribe(res => {
       if (res) {
@@ -285,7 +286,7 @@ export class StatetransactionComponent implements OnInit {
   /* apply filter  */
   applyFilter() {
     this.chartView = true;
-    this.getDSI(this.duration, this.selectedGroupDomain, this.selectedSKUID, this.selected, this.selectedExposure);
+    this.getDSI(this.duration, this.selectedGroupDomain, this.selectedSKUID, this.selected, this.selectedExposure,this.selectedValToggleGroup);
     this.GetGroupDomainTraigeAccuracy(this.selected, this.selectedExposure, this.selectedSKUID, this.selectedGroupDomain);
   }
 
@@ -429,8 +430,9 @@ export class StatetransactionComponent implements OnInit {
     chart.data = this.getDcrDetailsList;
     createSeries('new_to_promote', 'Open.New to Open.Promoted', 'new_to_traige_percentage', "[font-size:14px] Open.New ( {open_newDays} days, {open_newcount} HSDs) \n Open.Awaiting_triage ( {open_Awaiting_triage_Days} days, {open_Awaiting_triage_Count} HSDs) \n Open.Triage ( {open_TriageDays} days, {open_TriageCount} HSDs) \n Open.Debug ( {open_DebugDays} days, {open_DebugDays} HSDs) \n Open.Awaiting_submitter ( {open_Awaiting_SubmitterDays} days, {open_Awaiting_SubmitterCount} HSDs) \n Open.Awaiting_debug ( {open_Awaiting_debugDays} days, {open_Awaiting_debugCount} HSDs)");
     createSeries('open_promoted_to_implemented_awaiting_integration', 'Open.Promoted to Implemented.Awaiting_Integration', 'new_to_traige_percentage', "[font-size:14px] Open.Debug ( {open_DebugDays} days, {open_DebugDays} HSDs) \n Open.Awaiting_submitter ( {open_Awaiting_SubmitterDays} days, {open_Awaiting_SubmitterCount} HSDs) \n Open.Awaiting_debug ( {open_Awaiting_debugDays} days, {open_Awaiting_debugCount} HSDs) \n Open.Promoted ( {open_PromotedDays} days, {open_PromotedCount} HSDs) \n Open.awaiting_promoted ( {open_awaiting_promotedDays} days, {open_awaiting_promotedCount} HSDs) \n Implemented.Awaiting_Ingredient_release ( {implemented_Awaiting_Ingredient_releaseDays} days, {implemented_Awaiting_Ingredient_releaseCount} HSDs) \n open.verify_failed ( {open_verify_failedDays} days, {open_verify_failedCount} HSDs)");
-    createSeries('open_promoted_to_implemented_awaiting_integration', 'Implemented.Awaiting_Integration to Verified', 'new_to_traige_percentage', "[font-size:14px] Implemented.Awaiting_Integration : {implemented_awaiting_integration_to_verified}");
-    createSeries('verified_to_completed', 'Verified to Complete', 'new_to_traige_percentage', "[font-size:14px] Verified : {verified_to_completed} \n open.verify_failed ( {open_verify_failedDays} days, {open_verify_failedCount} HSDs)");
+    createSeries('implemented_awaiting_integration_to_verified', 'Implemented.Awaiting_Integration to Verified', 'new_to_traige_percentage', "[font-size:14px] Implemented.Awaiting_Integration ( {implemented_Awaiting_IntegrationDays} days, {implemented_Awaiting_IntegrationCount} HSDs) \n Implemented.Await_user_verify ( {implemented_Await_user_verifyDays} days, {implemented_Await_user_verifyCount} HSDs)");
+    createSeries('verified_to_completed', 'Verified to Complete', 'new_to_traige_percentage', "[font-size:14px] open.verify_failed ( {open_verify_failedDays} days, {open_verify_failedCount} HSDs)");
+   // createSeries('verified_to_completed', 'Verified to Complete', 'new_to_traige_percentage', "[font-size:14px] Verified : {verified_to_completed} \n open.verify_failed ( {open_verify_failedDays} days, {open_verify_failedCount} HSDs)");
     /* createSeries('newToTraige', 'New to triage', 'new_to_traige_percentage');
     createSeries('triageDays', 'Triage days', 'triage_Days_percentage');
     createSeries('traigetoimplemented', 'Triage exit to implemented', 'traige_to_implemented_percentage');

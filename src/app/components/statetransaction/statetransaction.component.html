@@ -189,9 +189,9 @@
                     </div>
                     <div class="float-right mt_8 mr-3">
                         <mat-button-toggle-group name="fontStyle" appearance="legacy" aria-label="Font Style" [value]="selectedValToggleGroup">
-                            <mat-button-toggle value="0" (click)="onValChangeToggleGroup('0')" matTooltip="All">All</mat-button-toggle>
-                            <mat-button-toggle value="1" (click)="onValChangeToggleGroup('1')" matTooltip="Defect Only">Defect Only</mat-button-toggle>
-                            <mat-button-toggle value="2" (click)="onValChangeToggleGroup('2')" matTooltip="Noise Only">Noise Only</mat-button-toggle>
+                            <mat-button-toggle value="All" (click)="onValChangeToggleGroup('All')" matTooltip="All">All</mat-button-toggle>
+                            <mat-button-toggle value="Defects" (click)="onValChangeToggleGroup('Defects')" matTooltip="Defect Only">Defect Only</mat-button-toggle>
+                            <mat-button-toggle value="Noise" (click)="onValChangeToggleGroup('Noise')" matTooltip="Noise Only">Noise Only</mat-button-toggle>
                         </mat-button-toggle-group>
                     </div>
                 </div>

@@ -177,7 +177,7 @@ export class SubmittedvsclosedComponent implements OnInit {
         this.selected = arrData.join(',');
         this.selectedTXT = this.selected;
         this.allSelected = false;
-        this.getDSI("Year", "Group Domain", "SKU", this.selected);
+        this.getDSI("Year", "Group Domain", "SKU", this.selected,'Exposure');
         this.tempList = res.platformslist;
         // this.dataShare.changeplatformList(res.platformslist)
         this.exposerList = res.exploserfilterlists;
@@ -376,8 +376,8 @@ export class SubmittedvsclosedComponent implements OnInit {
       series.dataFields.categoryX = 'chartType'
       series.name = name;
       series.columns.template.tooltipText = "[font-size:14px]{name} : {valueY}";
-      series.events.on("hidden", arrangeColumns);
-      series.events.on("shown", arrangeColumns);
+      /* series.events.on("hidden", arrangeColumns);
+      series.events.on("shown", arrangeColumns); */
 
       let bullet = series.bullets.push(new am4charts.LabelBullet())
       bullet.interactionsEnabled = false
