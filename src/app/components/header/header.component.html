@@ -28,12 +28,12 @@
               </button>
                     <div class="dropdown-content">
                         <ng-container *ngFor="let ite of item.subHeadingList; let j = index">
-                            <a (click)="onSelectTab(ite.url)">{{ite.menu}} <span *ngIf="ite.menu!='DCR' && ite.menu!='Milestone Blockers' && ite.menu!='triage-accuracy' && ite.menu!='Sighting Defect DCR trend' && ite.menu!='Overall Ageing  Backlog trend' && ite.menu!='Closed Sighting and Defect ageing / TPT' && ite.menu!='Triage latency' && ite.menu!='BugAssist usage'  && ite.menu!='Breakup of days metrics'&& ite.menu!='HSD promote statistics'" class="badge badge-pill badge-info">Beta</span></a>
+                            <a (click)="onSelectTab(ite.url)">{{ite.menu}} <span *ngIf="ite.menu!='DCR' && ite.menu!='Milestone Blockers' && ite.menu!='triage-accuracy' && ite.menu!='Sighting Defect DCR trend' && ite.menu!='Overall Ageing  Backlog trend' && ite.menu!='Closed Sighting and Defect ageing / TPT' && ite.menu!='Triage latency' && ite.menu!='BugAssist usage'  && ite.menu!='Breakup of days metrics'&& ite.menu!='HSD promote statistics'&& ite.menu!='Sighting Throughput (OKR view)'" class="badge badge-pill badge-info">Beta</span></a>
                         </ng-container>
                     </div>
                 </div>
             </ng-container>
-            <!-- <ng-container>
+           <!--  <ng-container>
                 <div class="staging">This is a staging site, for production indicators please <a class="staging_link" href=" https://sivdebugindicator.intel.com/#/home" target="_blank"> click here </a></div>
             </ng-container> -->
             <ng-container>

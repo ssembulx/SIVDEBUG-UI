@@ -688,12 +688,12 @@ export class DefectAgeingComponent implements OnInit, OnDestroy {
       valueAxis.renderer.labels.template.fill = am4core.color("#e91e63"); */
 
       let range = valueAxis.axisRanges.create();
-      range.value = 49;
+      range.value = 43;
       range.grid.stroke = am4core.color("#00796B");
       range.grid.strokeWidth = 1;
       range.grid.strokeOpacity = 1;
       range.label.inside = true;
-      range.label.text = "Closed Sighting ageing goal (Q3'2022, Critical + High) = 49 days";
+      range.label.text = "Closed Sighting ageing goal (Q4'2022, Critical + High) = 43 days";
       range.label.fill = range.grid.stroke;
       range.label.align = "left";
       range.label.verticalCenter = "bottom";

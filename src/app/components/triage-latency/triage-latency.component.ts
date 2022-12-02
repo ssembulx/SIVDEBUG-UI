@@ -476,12 +476,12 @@ export class TriageLatencyComponent implements OnInit {
       valueAxis.renderer.minGridDistance = 30;
 
       let range = valueAxis.axisRanges.create();
-      range.value = 8;
+      range.value = 7;
       range.grid.stroke = am4core.color("#e91e63");
       range.grid.strokeWidth = 1;
       range.grid.strokeOpacity = 1;
       range.label.inside = true;
-      range.label.text = "New to Triage exit target for Critical and High for Q3 2022 = 8 days";
+      range.label.text = "New to Triage exit target for Critical and high for Q4'20222 = 7 days";
       range.label.fill = range.grid.stroke;
       range.label.align = "left";
       range.label.verticalCenter = "bottom";
@@ -496,7 +496,7 @@ export class TriageLatencyComponent implements OnInit {
       lineSeries.strokeWidth = 2;
       lineSeries.propertyFields.strokeDasharray = "lineDash";
       lineSeries.tooltip.label.textAlign = "middle";
-      
+
 
       var bullet = lineSeries.bullets.push(new am4charts.Bullet());
       bullet.fill = am4core.color("#e91e63"); // tooltips grab fill from parent by default
