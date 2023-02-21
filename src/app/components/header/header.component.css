@@ -177,7 +177,7 @@ h3 {
 }
 
 .text-width-right {
-    width: 18%;
+    width: 10%;
     text-align: right;
     color: #fff;
     padding-top: 5px;
@@ -204,4 +204,12 @@ h3 {
 
 .header-version-modal {
     color: #007bff;
+}
+
+.header-moving-lines{
+    max-width: 500px;
+    overflow: hidden;
+    position: relative;
+    /* vertical-align: middle; */
+    padding-top: 5px;
 }

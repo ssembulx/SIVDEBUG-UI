@@ -33,9 +33,9 @@
                     </div>
                 </div>
             </ng-container>
-            <!--   <ng-container>
-                <div class="staging">This is a staging site, for production indicators please <a class="staging_link" href=" https://sivdebugindicator.intel.com/#/home" target="_blank"> click here </a></div>
-            </ng-container> -->
+              <ng-container >
+                <marquee class="header-moving-lines" style="color: red;font-weight: 600;" behavior="scroll" direction="left">This site is being migrated to CQI <a class="staging_link" href=" https://clientqualityindicators.intel.com" target="_blank"> ( https://clientqualityindicators.intel.com/) </a>  please refer CQI for latest date. This site is planned for EOL by WW10. </marquee>
+            </ng-container>
             <ng-container>
                 <div class="text-width-right">
                     <div style="margin-right: 2%;"><span>{{releaseNote[0].version}} <i aria-hidden="true" (click)="openReleaseNotes(releaseNotes)" class="fa fa-question-circle" style="padding-left: 2px; cursor: pointer;"></i></span></div>
