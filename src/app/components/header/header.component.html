@@ -33,7 +33,7 @@
                     </div>
                 </div>
             </ng-container>
-              <ng-container >
+              <ng-container *ngIf="Staging" >
                 <marquee class="header-moving-lines" style="color: red;font-weight: 600;" behavior="scroll" direction="left">This site is being migrated to CQI <a class="staging_link" href=" https://clientqualityindicators.intel.com" target="_blank"> ( https://clientqualityindicators.intel.com/) </a>  please refer CQI for latest date. This site is planned for EOL by WW10. </marquee>
             </ng-container>
             <ng-container>

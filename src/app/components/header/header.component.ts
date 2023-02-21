@@ -60,10 +60,12 @@ export class HeaderComponent implements OnInit {
 
   /* get menu data */
   SideNavMenu;
+  Staging : any = false;
   getMenuData() {
     this.dataSvc.getMenuData().subscribe(res => {
       if (res) {
         this.SideNavMenu = res.getmenu;
+        this.Staging = true;
       }
     });
   }
