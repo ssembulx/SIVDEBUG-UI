@@ -213,3 +213,29 @@ h3 {
     /* vertical-align: middle; */
     padding-top: 5px;
 }
+
+.time-section{
+    text-align: center;
+}
+
+.timer{
+    font-size: 76px;
+    font-weight: 800;
+    color: #0071c5 !important;
+    text-align: center;
+    margin-top: 214px;
+}
+
+.adjust{
+    text-align: center;
+    margin-top: 71px;
+    font-size: 23px;
+}
+
+.href {
+    color: #007bff;
+    text-decoration: underline;
+    background-color: transparent;
+    text-align: center;
+    font-size: 23px;
+}

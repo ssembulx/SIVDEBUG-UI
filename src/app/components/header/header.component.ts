@@ -17,14 +17,16 @@ export class HeaderComponent implements OnInit {
 
   userInfo: AccountModel;
   data;
+  header : any = false;
   ngOnInit(): void {
     /* this.SideNavMenu = sidenav; */
     this.helper.GetUser().subscribe(user => {
       this.userInfo = user;
     });
     this.dataShare.currentTitle.subscribe(message => this.Pagetitle = message);
-    this.getPlatformData();
-    this.getMenuData();
+    // this.getPlatformData();
+    // this.getMenuData();
+    this.timer();
   }
   onSelectTab(newTab: string): void {
     /* if (newTab == "dcr" || newTab == "triage-accuracy" || newTab == "defect-ageing" || newTab == "triage-latency" || newTab == "through-put" || newTab == "milestone-blockers") { */
@@ -69,4 +71,26 @@ export class HeaderComponent implements OnInit {
       }
     });
   }
+
+  timer(){
+    var timeLeft = 10;
+var elem = document.getElementById('Timer');
+
+var timerId = setInterval(countdown, 1000);
+
+function countdown() {
+  if (timeLeft < 0) {
+    clearTimeout(timerId);
+    doSomething();
+  } else {
+    elem.innerHTML = timeLeft + '';
+    timeLeft--;
+  }
 }
+  }
+
+}
+function doSomething() {
+  window.location.href = 'https://clientqualityindicators.intel.com/#/';
+}
+

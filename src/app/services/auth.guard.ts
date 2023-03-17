@@ -32,9 +32,9 @@ export class AuthGuard implements CanActivate {
                                 });
                             }
                         });
-                        res(true);
+                        res(false);
                     } else if (active.responses[0].result_table[0].isWritable == 0) {
-                        this.router.navigate(['/AccessDenied']);
+                        //this.router.navigate(['']);
                         res(false);
                     }
                 }
